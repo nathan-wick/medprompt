@@ -1,4 +1,4 @@
-package com.nathanwick.it3048cfinalproject
+package com.nathanwick.medprompt
 
 import org.junit.Test
 
