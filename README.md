@@ -9,10 +9,10 @@ Keeping track of medications and doctors appointments can be overwhelming, espec
 * Keep track of any forms you need to fill out for medical or insurance puprposes
 * Provide timely remiders to your android cellphone via push notifications <br />
 
+
 Use Medprompt to remind you of your important medical dates and times so you can put your best effort towards healing.
 
-
-# Storyboard
+# Storyboards
 ![Authentication View](https://github.com/nathan-wick/IT3048C-FinalProject/blob/8bcf4212df14883937bfe9e9d68ab2acae68426e/Prototype/Images/AuthView.png?raw=true)
 ![Main View](https://github.com/nathan-wick/IT3048C-FinalProject/blob/8bcf4212df14883937bfe9e9d68ab2acae68426e/Prototype/Images/MainView.png?raw=true)
 ![Main Plus View](https://github.com/nathan-wick/IT3048C-FinalProject/blob/8bcf4212df14883937bfe9e9d68ab2acae68426e/Prototype/Images/MainPlusView.png?raw=true)
