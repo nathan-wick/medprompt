@@ -25,6 +25,7 @@ Color Palette: https://coolors.co/010d28-1768ac-f5f5f5-ffffff
 # Functional Requirements
 
 # Class Diagram
+![UML Diagram](https://github.com/nathan-wick/IT3048C-FinalProject/blob/8bcf4212df14883937bfe9e9d68ab2acae68426e/Prototype/Images/MedPrompt.drawio.png?raw=true) 
 
 # Roles
 Project Manager: <br />
