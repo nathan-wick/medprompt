@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">medprompt</string>
+    <string name="itemName">item Name</string>
+    <string name="timeTakeMedication">Time to take Medication</string>
+    <string name="frequency">Frequency to take medication(Optional)</string>
+    <string name="doseSize">Dose Size (Optional)</string>
+    <string name="stock">Stock (Optional)</string>
+    <string name="save">Save</string>
 </resources>
