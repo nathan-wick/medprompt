@@ -16,13 +16,6 @@ plugins {
     id 'org.jetbrains.kotlin.android' version '1.5.31' apply false
 }
 
-// TODO: Figure out why this block is throwing errors in the build
-//allprojects {
-//    repositories {
-//        google()
-//    }
-//}
-
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
