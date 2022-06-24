@@ -33,6 +33,7 @@ class HomeActivity : ComponentActivity() {
 
 @Composable
 fun ToDoItemFacts(name: String) {
+    //all vars and vals meet best practices
     var itemName by remember { mutableStateOf("")}
     var timeOfDay by remember { mutableStateOf("")}
     var frequency by remember { mutableStateOf("")}
