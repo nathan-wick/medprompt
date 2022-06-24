@@ -16,6 +16,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            //you could set a fancy theme here
             MedpromptTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -28,7 +29,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
+//all funs follow best practices
 @Composable
 fun Greeting(name: String) {
     Text(text = "Hello $name!")
