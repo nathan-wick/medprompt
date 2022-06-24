@@ -30,7 +30,7 @@ class HomeActivity : ComponentActivity() {
         }
     }
 }
-
+//nice implementations of vars would work on naming such as capitalizing first letter
 @Composable
 fun ToDoItemFacts(name: String) {
     var itemName by remember { mutableStateOf("")}
