@@ -27,9 +27,8 @@ public class HomeActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
-                ) {
-                    ToDoItemFacts("Android")
-                }
+                )
+                { ToDoItemFacts("Android") }
             }
         }
     }
@@ -41,35 +40,40 @@ public class HomeActivity : ComponentActivity() {
  */
 @Composable
 fun ToDoItemFacts(name: String) {
-    var itemName by remember { mutableStateOf("")}
-    var timeOfDay by remember { mutableStateOf("")}
-    var frequency by remember { mutableStateOf("")}
-    var doseSize by remember { mutableStateOf("")}
-    var stock by remember { mutableStateOf("")}
+    var itemName by remember { mutableStateOf("") }
+    var timeOfDay by remember { mutableStateOf("") }
+    var frequency by remember { mutableStateOf("") }
+    var doseSize by remember { mutableStateOf("") }
+    var stock by remember { mutableStateOf("") }
     val context = LocalContext.current
 
     Column {
-        OutlinedTextField(value = itemName,
+        OutlinedTextField(
+            value = itemName,
             onValueChange = { itemName = it },
             label = { Text(stringResource(R.string.itemName)) }
         )
-        OutlinedTextField(value = timeOfDay,
+        OutlinedTextField(
+            value = timeOfDay,
             onValueChange = { timeOfDay = it },
             label = { Text(stringResource(R.string.timeTakeMedication)) }
         )
-        OutlinedTextField(value = frequency,
+        OutlinedTextField(
+            value = frequency,
             onValueChange = { frequency = it },
             label = { Text(stringResource(R.string.frequency)) }
         )
-        OutlinedTextField(value = doseSize,
+        OutlinedTextField(
+            value = doseSize,
             onValueChange = { doseSize = it },
             label = { Text(stringResource(R.string.doseSize)) }
         )
-        OutlinedTextField(value = stock,
+        OutlinedTextField(
+            value = stock,
             onValueChange = { stock = it },
             label = { Text(stringResource(R.string.stock)) }
         )
-        Button (
+        Button(
             onClick = {
                 Toast.makeText(
                     context,
@@ -77,7 +81,7 @@ fun ToDoItemFacts(name: String) {
                     Toast.LENGTH_LONG
                 ).show()
             }
-        ){
+        ) {
             Text(text = stringResource(R.string.save))
         }
     }
@@ -85,8 +89,4 @@ fun ToDoItemFacts(name: String) {
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview2() {
-    MedpromptTheme {
-        ToDoItemFacts(name = "")
-    }
-}
+fun DefaultPreview2() = MedpromptTheme { ToDoItemFacts(name = "") }

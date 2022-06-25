@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.medprompt.ui.theme.MedpromptTheme
-// we should be able to use retrofit to get json for medication names
+// We should be able to use retrofit to get json for medication names
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,23 +21,15 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
-                }
+                ) { Greeting("Android") }
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
+fun Greeting(name: String) = Text(text = "Hello $name!")
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
-    MedpromptTheme {
-        Greeting("Android")
-    }
-}
+fun DefaultPreview() = MedpromptTheme { Greeting("Android") }
