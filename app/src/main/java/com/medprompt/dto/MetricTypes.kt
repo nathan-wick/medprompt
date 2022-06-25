@@ -1,7 +1,7 @@
 package com.medprompt.dto
 
-class MetricTypes(id: Int,
-                  name: String
+class MetricTypes(var id: Int,
+                  var name: String
 ) {
 
 }

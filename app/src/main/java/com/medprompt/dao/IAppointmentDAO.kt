@@ -6,10 +6,10 @@ import com.medprompt.dto.MetricTypes
 import com.medprompt.dto.Notification
 import retrofit2.Call
 import retrofit2.http.GET
-
 /**
  * Interface for RetrofitClientInstance
  */
-interface INotificationDAO {
-    // Implement the @GET here to get json data
+
+interface IAppointmentDAO {    // Implement the @GET here to get json data
+
 }
