@@ -14,7 +14,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.medprompt.ui.theme.MedpromptTheme
 
-class HomeActivity : ComponentActivity() {
+/**
+ * class HomeActivity is the Home page of all the activities.
+ * Uses MedpromptTheme and calls ToDoItemFacts()
+ */
+public class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -31,6 +35,10 @@ class HomeActivity : ComponentActivity() {
     }
 }
 
+/**
+ * Display OutlinedtextField for mutable itemName, timeOfDay, frequency, doesSize, stock.
+ * Create a "Save" onClick button
+ */
 @Composable
 fun ToDoItemFacts(name: String) {
     var itemName by remember { mutableStateOf("")}

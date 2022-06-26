@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 /**
- * RetrofitClientInstance object bootstrap
+ * RetrofitClientInstance object bootstrap boilerplate code for future JSON implementation
  */
 object RetrofitClientInstance {
 
