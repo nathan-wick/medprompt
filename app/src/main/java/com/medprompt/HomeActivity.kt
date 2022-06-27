@@ -30,6 +30,7 @@ class HomeActivity : ComponentActivity() {
         }
     }
 }
+// work putting space between the ) and the } to resolve that warning 
 //nice implementations of vars would work on naming such as capitalizing first letter
 @Composable
 fun ToDoItemFacts(name: String) {
