@@ -19,6 +19,7 @@ private val LightColorPalette = lightColors(
     */
 )
 
+// would fix the typo here
 @Composable
 fun MedpromptTheme(content: @Composable () -> Unit) {
     val colors = LightColorPalette
