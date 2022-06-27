@@ -41,8 +41,10 @@ fun ToDoItemFacts(name: String) {
     var stock by remember { mutableStateOf("")}
     val context = LocalContext.current
 
+    //fixed value to another line to align
     Column {
-        OutlinedTextField(value = itemName,
+        OutlinedTextField(
+            value = itemName,
             onValueChange = { itemName = it },
             label = { Text(stringResource(R.string.itemName)) }
         )
