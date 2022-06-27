@@ -40,10 +40,10 @@ public class HomeActivity : ComponentActivity() {
  * Create a "Save" onClick button
  */
 @Composable
-fun ToDoItemFacts(name: String) {
+fun ToDoItemFacts(platformName: String) {
     var itemName by remember { mutableStateOf("")}
     var timeOfDay by remember { mutableStateOf("")}
-    var frequency by remember { mutableStateOf("")}
+    var doseFrequency by remember { mutableStateOf("")}
     var doseSize by remember { mutableStateOf("")}
     var stock by remember { mutableStateOf("")}
     val context = LocalContext.current
@@ -57,8 +57,8 @@ fun ToDoItemFacts(name: String) {
             onValueChange = { timeOfDay = it },
             label = { Text(stringResource(R.string.timeTakeMedication)) }
         )
-        OutlinedTextField(value = frequency,
-            onValueChange = { frequency = it },
+        OutlinedTextField(value = doseFrequency,
+            onValueChange = { doseFrequency = it },
             label = { Text(stringResource(R.string.frequency)) }
         )
         OutlinedTextField(value = doseSize,
@@ -73,7 +73,7 @@ fun ToDoItemFacts(name: String) {
             onClick = {
                 Toast.makeText(
                     context,
-                    "$itemName $timeOfDay $frequency $doseSize $stock",
+                    "$itemName $timeOfDay $doseFrequency $doseSize $stock",
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -87,6 +87,6 @@ fun ToDoItemFacts(name: String) {
 @Composable
 fun DefaultPreview2() {
     MedpromptTheme {
-        ToDoItemFacts(name = "")
+        ToDoItemFacts("testplatformname")
     }
 }
