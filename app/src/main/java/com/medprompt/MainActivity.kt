@@ -5,10 +5,9 @@ import android.os.TestLooperManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,8 +24,7 @@ class MainActivity : ComponentActivity() {
             MedpromptTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     Homescreen()
                 }
@@ -37,12 +35,16 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Homescreen() {
-    AppointmentList()
-    AddButton()
+    Row (
+        modifier = Modifier.fillMaxSize()
+    ) {
+        AppointmentList()
+        AddButton()
+    }
 }
 
 @Composable
-fun AppointmentList() {
+fun RowScope.AppointmentList() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -55,14 +57,18 @@ fun AppointmentList() {
                 .height(50.dp),
             color = MaterialTheme.colors.primary
         ) {
-            Row(
+            Row (
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.padding(horizontal = 10.dp)
             ) {
                 Text(text = "MedPrompt")
-                Button(onClick = { /*TODO*/ }) {
-                    Text(text = "Menu", modifier = Modifier.padding(horizontal = 10.dp))
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        imageVector = Icons.Filled.Menu,
+                        contentDescription = "Menu",
+                        modifier = Modifier.padding(horizontal = 10.dp)
+                    )
                 }
             }
         }
@@ -95,8 +101,10 @@ fun AppItem(appText : String, appDate: String) {
 }
 
 @Composable
-fun AddButton () {
-
+fun RowScope.AddButton () {
+    Button(onClick = { /*TODO*/ }) {
+        Text(text = "Add", color = Color.Black)
+    }
 }
 
 @Preview(showBackground = true)
