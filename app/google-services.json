@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1007495763285",
+    "project_id": "it3048c-medprompt",
+    "storage_bucket": "it3048c-medprompt.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1007495763285:android:976eec47a40231c661cbdc",
+        "android_client_info": {
+          "package_name": "com.medprompt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1007495763285-gm8db6geuv6c617onvnb6q0q4u1n49es.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALxVwk-G4SIbUwyvSHxl3H8vRLzQMzYdk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1007495763285-gm8db6geuv6c617onvnb6q0q4u1n49es.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

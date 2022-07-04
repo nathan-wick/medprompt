@@ -16,6 +16,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.medprompt.ui.theme.MedpromptTheme
+
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.runtime.rememberCoroutineScope
+import com.medprompt.ui.theme.NavigationDrawerComposeTheme
+import kotlinx.coroutines.launch
+
 // we should be able to use retrofit to get json for medication names
 
 class MainActivity : ComponentActivity() {
@@ -30,6 +38,55 @@ class MainActivity : ComponentActivity() {
                     HomeScreen()
                 }
             }
+            NavigationDrawerComposeTheme {
+                val scaffoldState = rememberScaffoldState()
+                val scope = rememberCoroutineScope()
+                Scaffold(
+                    scaffoldState = scaffoldState,
+                    topBar = {
+                        AppBar(
+                            onNavigationIconClick = {
+                                scope.launch {
+                                    scaffoldState.drawerState.open()
+                                }
+                            }
+                        )
+                    },
+                    drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
+                    drawerContent = {
+                        DrawerHeader()
+                        DrawerBody(
+                            items = listOf(
+                                MenuItem(
+                                    id = "home",
+                                    title = "Home",
+                                    contentDescription = "Go to home screen",
+                                    icon = Icons.Default.Home
+                                ),
+                                MenuItem(
+                                    id = "account",
+                                    title = "My Account",
+                                    contentDescription = "Manage my account",
+                                    icon = Icons.Default.AccountCircle
+                                ),
+                                MenuItem(
+                                    id = "signout",
+                                    title = "Sign Out",
+                                    contentDescription = "Sign out",
+                                    icon = Icons.Default.ArrowBack
+                                ),
+                            ),
+                            onItemClick = {
+                                // TODO: Change screen on item click
+                                println("Clicked on ${it.title}")
+                            }
+                        )
+                    }
+                ) {
+
+                }
+            }
+
         }
     }
 }
