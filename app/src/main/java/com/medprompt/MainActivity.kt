@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,7 +27,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    Homescreen()
+                    HomeScreen()
                 }
             }
         }
@@ -34,17 +35,15 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Homescreen() {
-    Row (
-        modifier = Modifier.fillMaxSize()
-    ) {
-        AppointmentList()
-        AddButton()
-    }
+fun HomeScreen() {
+    Scaffold(
+        content = { AppointmentList() },
+        floatingActionButton = { AddButton() }
+    )
 }
 
 @Composable
-fun RowScope.AppointmentList() {
+fun AppointmentList() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -101,9 +100,12 @@ fun AppItem(appText : String, appDate: String) {
 }
 
 @Composable
-fun RowScope.AddButton () {
-    Button(onClick = { /*TODO*/ }) {
-        Text(text = "Add", color = Color.Black)
+fun AddButton () {
+    IconButton(onClick = { /*TODO*/ }) {
+        Icon(
+            imageVector = Icons.Filled.Add,
+            contentDescription = "Add Appointments",
+        )
     }
 }
 
@@ -111,6 +113,6 @@ fun RowScope.AddButton () {
 @Composable
 fun DefaultPreview() {
     MedpromptTheme {
-        Homescreen()
+        HomeScreen()
     }
 }
