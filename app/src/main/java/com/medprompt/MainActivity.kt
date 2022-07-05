@@ -9,7 +9,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.medprompt.ui.theme.MedpromptTheme
 import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import com.medprompt.ui.theme.NavigationDrawerComposeTheme
 import kotlinx.coroutines.launch
 
@@ -166,26 +165,33 @@ fun AppItem(appText : String, appDate: String) {
 @Composable
 fun AddButton () {
 //    TODO: Make the Add Icon Button a blue circle with options
+    var openAddOptions by remember { mutableStateOf(false) }
     
     Column (
         horizontalAlignment = Alignment.End
     ){
-        Box(modifier = Modifier.width(150.dp)) {
-           Column (
-               horizontalAlignment = Alignment.End
-           ) {
-               Button(onClick = { /*TODO*/ }) {
-                   Text(text = "Medication")
-               }
-               Button(onClick = { /*TODO*/ }) {
-                   Text(text = "Appointment")
-               }
-               Button(onClick = { /*TODO*/ }) {
-                   Text(text = "Form")
-               }
-           }
+
+        if (openAddOptions) {
+            Box(modifier = Modifier.width(150.dp)) {
+                Column (
+                    horizontalAlignment = Alignment.End
+                ) {
+                    Button(onClick = { /*TODO*/ }) {
+                        Text(text = "Medication")
+                    }
+                    Button(onClick = { /*TODO*/ }) {
+                        Text(text = "Appointment")
+                    }
+                    Button(onClick = { /*TODO*/ }) {
+                        Text(text = "Form")
+                    }
+                }
+            }
         }
-        IconButton(onClick = { /*TODO*/ }) {
+
+        IconButton(onClick = {
+            openAddOptions = !openAddOptions
+        }) {
             Icon(
                 imageVector = Icons.Filled.Add,
                 contentDescription = "Add Appointments",
