@@ -166,12 +166,33 @@ fun AppItem(appText : String, appDate: String) {
 @Composable
 fun AddButton () {
 //    TODO: Make the Add Icon Button a blue circle with options
-    IconButton(onClick = { /*TODO*/ }) {
-        Icon(
-            imageVector = Icons.Filled.Add,
-            contentDescription = "Add Appointments",
-        )
+    
+    Column (
+        horizontalAlignment = Alignment.End
+    ){
+        Box(modifier = Modifier.width(150.dp)) {
+           Column (
+               horizontalAlignment = Alignment.End
+           ) {
+               Button(onClick = { /*TODO*/ }) {
+                   Text(text = "Medication")
+               }
+               Button(onClick = { /*TODO*/ }) {
+                   Text(text = "Appointment")
+               }
+               Button(onClick = { /*TODO*/ }) {
+                   Text(text = "Form")
+               }
+           }
+        }
+        IconButton(onClick = { /*TODO*/ }) {
+            Icon(
+                imageVector = Icons.Filled.Add,
+                contentDescription = "Add Appointments",
+            )
+        }
     }
+    
 }
 
 @Preview(showBackground = true)
