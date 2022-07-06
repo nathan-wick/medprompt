@@ -24,10 +24,9 @@ fun MedicationScreen(navController: NavController) {
         modifier = Modifier.fillMaxSize()
     ) {
         Column {
-            Row(modifier = Modifier
-                .padding(5.dp)
-                .height(50.dp)) {
-                Button(modifier = Modifier
+            Row(modifier = Modifier.padding(5.dp).height(50.dp)) {
+                Button(
+                    modifier = Modifier
                     .weight(1f)
                     .padding(5.dp), onClick = {
                     navController.navigate(route = Screen.Home.route)
@@ -41,37 +40,24 @@ fun MedicationScreen(navController: NavController) {
                     Text(text = "Update Medication")
                 }
             }
-            Row(modifier = Modifier
-                .padding(5.dp)
-                .height(50.dp)) {
+            Row(modifier = Modifier.padding(5.dp).height(50.dp)) {
                 var medName by remember { mutableStateOf("") }
                 TextField(modifier = Modifier.fillMaxWidth(), value = medName, onValueChange = { medName = it })
             }
-            Row(modifier = Modifier
-                .padding(5.dp)
-                .height(50.dp)){
-
-                val timeList = listOf("8:00", "9:00")
-                var timeDropDownOpen by remember { mutableStateOf(false) }
-                var selectedTimeIndex by remember { mutableStateOf(0) }
-
-                val pmAmList = listOf("PM", "AM")
-                var pmAmDropDownOpen by remember { mutableStateOf(false) }
-                var selectedPmAmIndex by remember { mutableStateOf(0) }
-
-
-                var day by remember { mutableStateOf("") }
-
-                val monthList = listOf("Jan", "Feb")
-                var monthDropDownOpen by remember { mutableStateOf(false) }
-                var selectedMonthIndex by remember { mutableStateOf(0) }
-
-                val yearList = listOf("2000", "2001", "2002")
-                var yearDropDownOpen by remember { mutableStateOf(false) }
-                var selectedYearIndex by remember { mutableStateOf(0) }
-
+            Row(modifier = Modifier.padding(5.dp).height(50.dp)) {
                 Column {
-                    Row{
+                    var day by remember { mutableStateOf("") }
+
+                    val monthList = listOf("Jan", "Feb")
+                    var monthDropDownOpen by remember { mutableStateOf(false) }
+                    var selectedMonthIndex by remember { mutableStateOf(0) }
+
+                    val yearList = listOf("2000", "2001", "2002")
+                    var yearDropDownOpen by remember { mutableStateOf(false) }
+                    var selectedYearIndex by remember { mutableStateOf(0) }
+
+                    Row {
+
                         Box(modifier = Modifier.weight(3f), contentAlignment = Alignment.Center) {
                             TextField(value = day, onValueChange = { day = it }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
                         }
@@ -116,7 +102,17 @@ fun MedicationScreen(navController: NavController) {
                             }
                         }
                     }
-                    Row{
+
+
+                    val timeList = listOf("8:00", "9:00")
+                    var timeDropDownOpen by remember { mutableStateOf(false) }
+                    var selectedTimeIndex by remember { mutableStateOf(0) }
+
+                    val pmAmList = listOf("PM", "AM")
+                    var pmAmDropDownOpen by remember { mutableStateOf(false) }
+                    var selectedPmAmIndex by remember { mutableStateOf(0) }
+
+                    Row {
                         Box(modifier = Modifier
                             .weight(1f)
                             .fillMaxHeight(), contentAlignment = Alignment.Center) {
@@ -161,52 +157,7 @@ fun MedicationScreen(navController: NavController) {
                         }
                     }
                 }
-                Row{
-                    Box(modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight(), contentAlignment = Alignment.Center) {
-                        Text(
-                            timeList[selectedTimeIndex],
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .clickable(onClick = { timeDropDownOpen = true })
-                                .background(Color.Gray))
-                        DropdownMenu(expanded = timeDropDownOpen, onDismissRequest = { timeDropDownOpen = false }) {
-                            timeList.forEachIndexed { index, time ->
-                                DropdownMenuItem(onClick = {
-                                    selectedTimeIndex = index
-                                    timeDropDownOpen = false
-                                }) {
-                                    Text(text = time)
-                                }
-                            }
-                        }
-                    }
-                    Box(modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight(), contentAlignment = Alignment.Center) {
-                        Text(
-                            pmAmList[selectedPmAmIndex],
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .clickable(onClick = { pmAmDropDownOpen = true })
-                                .background(Color.Gray))
-                        DropdownMenu(expanded = pmAmDropDownOpen, onDismissRequest = { pmAmDropDownOpen = false }) {
-                            pmAmList.forEachIndexed { index, pmAm ->
-                                DropdownMenuItem(onClick = {
-                                    selectedPmAmIndex = index
-                                    pmAmDropDownOpen = false
-                                }) {
-                                    Text(text = pmAm)
-                                }
-                            }
-                        }
-                    }
-                }
             }
-
         }
     }
 }
