@@ -55,15 +55,15 @@ fun MedicationScreen(navController: NavController) {
                     val yearList = listOf("2000", "2001", "2002")
                     var yearDropDownOpen by remember { mutableStateOf(false) }
                     var selectedYearIndex by remember { mutableStateOf(0) }
-
                     Row {
-
-                        Box(modifier = Modifier.weight(3f), contentAlignment = Alignment.Center) {
-                            TextField(value = day, onValueChange = { day = it }, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                        Box(modifier = Modifier.weight(3f)) {
+                            TextField(
+                                value = day,
+                                onValueChange = { day = it },
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                            )
                         }
-                        Box(modifier = Modifier
-                            .weight(3f)
-                            .fillMaxHeight(), contentAlignment = Alignment.Center) {
+                        Box(modifier = Modifier.weight(3f)) {
                             Text(
                                 monthList[selectedMonthIndex],
                                 textAlign = TextAlign.Center,
@@ -71,13 +71,16 @@ fun MedicationScreen(navController: NavController) {
                                     .fillMaxSize()
                                     .clickable(onClick = { monthDropDownOpen = true })
                                     .background(Color.Gray))
-                            DropdownMenu(expanded = monthDropDownOpen, onDismissRequest = { monthDropDownOpen = false }) {
+                            DropdownMenu(
+                                expanded = monthDropDownOpen,
+                                onDismissRequest = { monthDropDownOpen = false }
+                            ) {
                                 monthList.forEachIndexed { index, month ->
                                     DropdownMenuItem(onClick = {
                                         selectedMonthIndex = index
                                         monthDropDownOpen = false
                                     }) {
-                                        Text(text = month)
+                                        Text(text = month, textAlign = TextAlign.Center)
                                     }
                                 }
                             }
@@ -90,19 +93,21 @@ fun MedicationScreen(navController: NavController) {
                                     .fillMaxSize()
                                     .clickable(onClick = { yearDropDownOpen = true })
                                     .background(Color.Gray))
-                            DropdownMenu(expanded = yearDropDownOpen, onDismissRequest = { yearDropDownOpen = false }) {
+                            DropdownMenu(
+                                expanded = yearDropDownOpen,
+                                onDismissRequest = { yearDropDownOpen = false }
+                            ) {
                                 yearList.forEachIndexed { index, year ->
                                     DropdownMenuItem(onClick = {
                                         selectedYearIndex = index
                                         yearDropDownOpen = false
                                     }) {
-                                        Text(text = year)
+                                        Text(text = year, textAlign = TextAlign.Center)
                                     }
                                 }
                             }
                         }
                     }
-
 
                     val timeList = listOf("8:00", "9:00")
                     var timeDropDownOpen by remember { mutableStateOf(false) }
@@ -111,19 +116,23 @@ fun MedicationScreen(navController: NavController) {
                     val pmAmList = listOf("PM", "AM")
                     var pmAmDropDownOpen by remember { mutableStateOf(false) }
                     var selectedPmAmIndex by remember { mutableStateOf(0) }
-
                     Row {
-                        Box(modifier = Modifier
+                        Box(
+                            modifier = Modifier
                             .weight(1f)
-                            .fillMaxHeight(), contentAlignment = Alignment.Center) {
+                        ) {
                             Text(
                                 timeList[selectedTimeIndex],
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .clickable(onClick = { timeDropDownOpen = true })
-                                    .background(Color.Gray))
-                            DropdownMenu(expanded = timeDropDownOpen, onDismissRequest = { timeDropDownOpen = false }) {
+                                    .background(Color.Gray)
+                            )
+                            DropdownMenu(
+                                expanded = timeDropDownOpen,
+                                onDismissRequest = { timeDropDownOpen = false }
+                            ) {
                                 timeList.forEachIndexed { index, time ->
                                     DropdownMenuItem(onClick = {
                                         selectedTimeIndex = index
@@ -134,17 +143,22 @@ fun MedicationScreen(navController: NavController) {
                                 }
                             }
                         }
-                        Box(modifier = Modifier
+                        Box(
+                            modifier = Modifier
                             .weight(1f)
-                            .fillMaxHeight(), contentAlignment = Alignment.Center) {
+                        ) {
                             Text(
                                 pmAmList[selectedPmAmIndex],
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .clickable(onClick = { pmAmDropDownOpen = true })
-                                    .background(Color.Gray))
-                            DropdownMenu(expanded = pmAmDropDownOpen, onDismissRequest = { pmAmDropDownOpen = false }) {
+                                    .background(Color.Gray)
+                            )
+                            DropdownMenu(
+                                expanded = pmAmDropDownOpen,
+                                onDismissRequest = { pmAmDropDownOpen = false }
+                            ) {
                                 pmAmList.forEachIndexed { index, pmAm ->
                                     DropdownMenuItem(onClick = {
                                         selectedPmAmIndex = index
