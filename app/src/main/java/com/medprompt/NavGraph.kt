@@ -21,15 +21,15 @@ fun SetupNavGraph(navController: NavHostController) {
         )
         composable(
             route = Screen.Medication.route,
-            content = { MedicationScreen() }
+            content = { MedicationScreen(navController = navController) }
         )
         composable(
             route = Screen.Appointment.route,
-            content = { AppointmentScreen() }
+            content = { AppointmentScreen(navController = navController) }
         )
         composable(
             route = Screen.Form.route,
-            content = { FormScreen() }
+            content = { FormScreen(navController = navController) }
         )
     }
 }
