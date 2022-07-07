@@ -6,4 +6,5 @@
     <string name="doseSize">Dose Size (Optional)</string>
     <string name="stock">Stock (Optional)</string>
     <string name="save">Save</string>
+    <string name="Logon">Logon</string>
 </resources>
