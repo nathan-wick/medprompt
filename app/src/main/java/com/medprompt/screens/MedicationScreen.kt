@@ -38,11 +38,13 @@ fun MedicationScreen(navController: NavController) {
             var pmAmDropDownOpen by remember { mutableStateOf(false) }
             var selectedPmAmIndex by remember { mutableStateOf(0) }
 
-            Row(modifier = Modifier.padding(5.dp).height(50.dp)) {
+            Row(modifier = Modifier
+                .padding(5.dp)
+                .height(50.dp)) {
                 Button(
                     modifier = Modifier
-                    .weight(1f)
-                    .padding(5.dp), onClick = {
+                        .weight(1f)
+                        .padding(5.dp), onClick = {
                     navController.navigate(route = Screen.Home.route)
                 }) {
                     Text(text = "Cancel")
@@ -50,15 +52,28 @@ fun MedicationScreen(navController: NavController) {
                 Button(modifier = Modifier
                     .weight(2f)
                     .padding(5.dp), onClick = { /*TODO*/ }) {
-                    // TODO: This has to say "Add Medication" if adding a new medication
-                    Text(text = "Update Medication")
+                    // TODO: This has to say "Update Medication" if updating
+                    Text(text = "Add Medication")
                 }
             }
-            Row(modifier = Modifier.padding(5.dp).height(50.dp)) {
+
+            Text(text = "Medication Name")
+            Row(modifier = Modifier
+                .padding(5.dp)
+                .height(50.dp)) {
                 var medName by remember { mutableStateOf("") }
-                TextField(modifier = Modifier.fillMaxWidth(), value = medName, onValueChange = { medName = it })
+                TextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = medName,
+                    onValueChange = { medName = it }
+                )
+
             }
-            Row(modifier = Modifier.padding(5.dp).height(50.dp)) {
+
+            Text(text = "Date and Time to take Medication")
+            Row(modifier = Modifier
+                .padding(5.dp)
+                .height(50.dp)) {
                 Box(modifier = Modifier.weight(3f)) {
                     TextField(
                         value = day,
@@ -111,7 +126,10 @@ fun MedicationScreen(navController: NavController) {
                     }
                 }
             }
-            Row(modifier = Modifier.padding(5.dp).height(50.dp)) {
+
+            Row(modifier = Modifier
+                .padding(5.dp)
+                .height(50.dp)) {
                     Box(
                         modifier = Modifier
                             .weight(1f)
@@ -165,6 +183,126 @@ fun MedicationScreen(navController: NavController) {
                         }
                     }
                 }
+
+            Text(text = "Frequency to take Medication")
+            Row(modifier = Modifier
+                .padding(5.dp)
+                .height(50.dp)) {
+                var freqNumber by remember { mutableStateOf("") }
+                val freqList = listOf("Weeks", "Months", "Years")
+                var freqDropDownOpen by remember { mutableStateOf(false) }
+                var selectedFreqIndex by remember { mutableStateOf(0) }
+
+                Box(modifier = Modifier.weight(3f)) {
+                    TextField(
+                        value = freqNumber,
+                        onValueChange = { freqNumber = it },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    )
+                }
+                Box(modifier = Modifier.weight(3f)) {
+                    Text(
+                        freqList[selectedFreqIndex],
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clickable(onClick = { freqDropDownOpen = true })
+                            .background(Color.Gray))
+                    DropdownMenu(
+                        expanded = freqDropDownOpen,
+                        onDismissRequest = { freqDropDownOpen = false }
+                    ) {
+                        freqList.forEachIndexed { index, freq ->
+                            DropdownMenuItem(onClick = {
+                                selectedFreqIndex = index
+                                freqDropDownOpen = false
+                            }) {
+                                Text(text = freq, textAlign = TextAlign.Center)
+                            }
+                        }
+                    }
+                }
+            }
+
+            Text(text = "Dose Size (Optional)")
+            Row(modifier = Modifier
+                .padding(5.dp)
+                .height(50.dp)) {
+                var doseSize by remember { mutableStateOf("") }
+                val unitList = listOf("MG", "ML")
+                var doseSizeDropDownOpen by remember { mutableStateOf(false) }
+                var selectedDoseSizeIndex by remember { mutableStateOf(0) }
+
+                Box(modifier = Modifier.weight(3f)) {
+                    TextField(
+                        value = doseSize,
+                        onValueChange = { doseSize = it },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    )
+                }
+                Box(modifier = Modifier.weight(3f)) {
+                    Text(
+                        unitList[selectedDoseSizeIndex],
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clickable(onClick = { doseSizeDropDownOpen = true })
+                            .background(Color.Gray))
+                    DropdownMenu(
+                        expanded = doseSizeDropDownOpen,
+                        onDismissRequest = { doseSizeDropDownOpen = false }
+                    ) {
+                        unitList.forEachIndexed { index, unit ->
+                            DropdownMenuItem(onClick = {
+                                selectedDoseSizeIndex = index
+                                doseSizeDropDownOpen = false
+                            }) {
+                                Text(text = unit, textAlign = TextAlign.Center)
+                            }
+                        }
+                    }
+                }
+            }
+
+            Text(text = "Stock Size (Optional)")
+            Row(modifier = Modifier
+                .padding(5.dp)
+                .height(50.dp)) {
+                var stockSizeNumber by remember { mutableStateOf("") }
+                val stockSizeList = listOf("MG", "ML")
+                var stockSizeDropDownOpen by remember { mutableStateOf(false) }
+                var selectedStockSizeIndex by remember { mutableStateOf(0) }
+
+                Box(modifier = Modifier.weight(3f)) {
+                    TextField(
+                        value = stockSizeNumber,
+                        onValueChange = { stockSizeNumber = it },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    )
+                }
+                Box(modifier = Modifier.weight(3f)) {
+                    Text(
+                        stockSizeList[selectedStockSizeIndex],
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clickable(onClick = { stockSizeDropDownOpen = true })
+                            .background(Color.Gray))
+                    DropdownMenu(
+                        expanded = stockSizeDropDownOpen,
+                        onDismissRequest = { stockSizeDropDownOpen = false }
+                    ) {
+                        stockSizeList.forEachIndexed { index, stockSize ->
+                            DropdownMenuItem(onClick = {
+                                selectedStockSizeIndex = index
+                                stockSizeDropDownOpen = false
+                            }) {
+                                Text(text = stockSize, textAlign = TextAlign.Center)
+                            }
+                        }
+                    }
+                }
+            }
 
         }
 }
