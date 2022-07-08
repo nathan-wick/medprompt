@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -15,11 +16,11 @@ import com.medprompt.ui.theme.MedpromptTheme
 fun RowScope.InputField (weight: Float, keyboardOptions: KeyboardOptions) {
     var text by remember { mutableStateOf("") }
 
-    Box(modifier = Modifier.weight(weight)) {
+    Box(modifier = Modifier.weight(weight), contentAlignment = Alignment.Center) {
         TextField(
             value = text,
             onValueChange = { text = it },
-            keyboardOptions = keyboardOptions
+            keyboardOptions = keyboardOptions,
         )
     }
 }
