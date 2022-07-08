@@ -16,29 +16,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.medprompt.Screen
 import com.medprompt.components.DateTimePicker
+import com.medprompt.components.HeaderOptions
 import com.medprompt.ui.theme.MedpromptTheme
 
 @Composable
 fun MedicationScreen(navController: NavController) {
         Column (modifier = Modifier.fillMaxSize()) {
-            Row(modifier = Modifier
-                .padding(5.dp)
-                .height(50.dp)) {
-                Button(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(5.dp), onClick = {
-                    navController.navigate(route = Screen.Home.route)
-                }) {
-                    Text(text = "Cancel")
-                }
-                Button(modifier = Modifier
-                    .weight(2f)
-                    .padding(5.dp), onClick = { /*TODO*/ }) {
-                    // TODO: This has to say "Update Medication" if updating
-                    Text(text = "Add Medication")
-                }
-            }
+            HeaderOptions(navController = navController, contextLabel = "Medication")
 
             Text(text = "Medication Name")
             Row(modifier = Modifier
