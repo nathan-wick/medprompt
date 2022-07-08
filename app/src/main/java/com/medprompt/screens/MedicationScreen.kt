@@ -16,6 +16,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.medprompt.Screen
 import com.medprompt.components.DateTimePicker
+import com.medprompt.components.DropDown
 import com.medprompt.components.HeaderOptions
 import com.medprompt.ui.theme.MedpromptTheme
 
@@ -47,8 +48,6 @@ fun MedicationScreen(navController: NavController) {
                 .height(50.dp)) {
                 var freqNumber by remember { mutableStateOf("") }
                 val freqList = listOf("Weeks", "Months", "Years")
-                var freqDropDownOpen by remember { mutableStateOf(false) }
-                var selectedFreqIndex by remember { mutableStateOf(0) }
 
                 Box(modifier = Modifier.weight(3f)) {
                     TextField(
@@ -57,28 +56,7 @@ fun MedicationScreen(navController: NavController) {
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                     )
                 }
-                Box(modifier = Modifier.weight(3f)) {
-                    Text(
-                        freqList[selectedFreqIndex],
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clickable(onClick = { freqDropDownOpen = true })
-                            .background(Color.Gray))
-                    DropdownMenu(
-                        expanded = freqDropDownOpen,
-                        onDismissRequest = { freqDropDownOpen = false }
-                    ) {
-                        freqList.forEachIndexed { index, freq ->
-                            DropdownMenuItem(onClick = {
-                                selectedFreqIndex = index
-                                freqDropDownOpen = false
-                            }) {
-                                Text(text = freq, textAlign = TextAlign.Center)
-                            }
-                        }
-                    }
-                }
+                DropDown(weight = 3f, items = freqList)
             }
 
             Text(text = "Dose Size (Optional)")
@@ -87,8 +65,6 @@ fun MedicationScreen(navController: NavController) {
                 .height(50.dp)) {
                 var doseSize by remember { mutableStateOf("") }
                 val unitList = listOf("MG", "ML")
-                var doseSizeDropDownOpen by remember { mutableStateOf(false) }
-                var selectedDoseSizeIndex by remember { mutableStateOf(0) }
 
                 Box(modifier = Modifier.weight(3f)) {
                     TextField(
@@ -97,28 +73,7 @@ fun MedicationScreen(navController: NavController) {
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                     )
                 }
-                Box(modifier = Modifier.weight(3f)) {
-                    Text(
-                        unitList[selectedDoseSizeIndex],
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clickable(onClick = { doseSizeDropDownOpen = true })
-                            .background(Color.Gray))
-                    DropdownMenu(
-                        expanded = doseSizeDropDownOpen,
-                        onDismissRequest = { doseSizeDropDownOpen = false }
-                    ) {
-                        unitList.forEachIndexed { index, unit ->
-                            DropdownMenuItem(onClick = {
-                                selectedDoseSizeIndex = index
-                                doseSizeDropDownOpen = false
-                            }) {
-                                Text(text = unit, textAlign = TextAlign.Center)
-                            }
-                        }
-                    }
-                }
+                DropDown(weight = 3f, items = unitList)
             }
 
             Text(text = "Stock Size (Optional)")
@@ -127,8 +82,6 @@ fun MedicationScreen(navController: NavController) {
                 .height(50.dp)) {
                 var stockSizeNumber by remember { mutableStateOf("") }
                 val stockSizeList = listOf("MG", "ML")
-                var stockSizeDropDownOpen by remember { mutableStateOf(false) }
-                var selectedStockSizeIndex by remember { mutableStateOf(0) }
 
                 Box(modifier = Modifier.weight(3f)) {
                     TextField(
@@ -137,28 +90,7 @@ fun MedicationScreen(navController: NavController) {
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                     )
                 }
-                Box(modifier = Modifier.weight(3f)) {
-                    Text(
-                        stockSizeList[selectedStockSizeIndex],
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clickable(onClick = { stockSizeDropDownOpen = true })
-                            .background(Color.Gray))
-                    DropdownMenu(
-                        expanded = stockSizeDropDownOpen,
-                        onDismissRequest = { stockSizeDropDownOpen = false }
-                    ) {
-                        stockSizeList.forEachIndexed { index, stockSize ->
-                            DropdownMenuItem(onClick = {
-                                selectedStockSizeIndex = index
-                                stockSizeDropDownOpen = false
-                            }) {
-                                Text(text = stockSize, textAlign = TextAlign.Center)
-                            }
-                        }
-                    }
-                }
+                DropDown(weight = 3f, items = stockSizeList)
             }
 
         }
