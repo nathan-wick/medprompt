@@ -1,5 +1,6 @@
 package com.medprompt.screens
 
+import android.renderscript.ScriptGroup
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -18,6 +19,7 @@ import com.medprompt.Screen
 import com.medprompt.components.DateTimePicker
 import com.medprompt.components.DropDown
 import com.medprompt.components.HeaderOptions
+import com.medprompt.components.InputField
 import com.medprompt.ui.theme.MedpromptTheme
 
 @Composable
@@ -46,16 +48,9 @@ fun MedicationScreen(navController: NavController) {
             Row(modifier = Modifier
                 .padding(5.dp)
                 .height(50.dp)) {
-                var freqNumber by remember { mutableStateOf("") }
                 val freqList = listOf("Weeks", "Months", "Years")
 
-                Box(modifier = Modifier.weight(3f)) {
-                    TextField(
-                        value = freqNumber,
-                        onValueChange = { freqNumber = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                    )
-                }
+                InputField(weight = 3f, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
                 DropDown(weight = 3f, items = freqList)
             }
 
@@ -63,16 +58,9 @@ fun MedicationScreen(navController: NavController) {
             Row(modifier = Modifier
                 .padding(5.dp)
                 .height(50.dp)) {
-                var doseSize by remember { mutableStateOf("") }
                 val unitList = listOf("MG", "ML")
 
-                Box(modifier = Modifier.weight(3f)) {
-                    TextField(
-                        value = doseSize,
-                        onValueChange = { doseSize = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                    )
-                }
+                InputField(weight = 3f, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
                 DropDown(weight = 3f, items = unitList)
             }
 
@@ -80,16 +68,9 @@ fun MedicationScreen(navController: NavController) {
             Row(modifier = Modifier
                 .padding(5.dp)
                 .height(50.dp)) {
-                var stockSizeNumber by remember { mutableStateOf("") }
                 val stockSizeList = listOf("MG", "ML")
 
-                Box(modifier = Modifier.weight(3f)) {
-                    TextField(
-                        value = stockSizeNumber,
-                        onValueChange = { stockSizeNumber = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                    )
-                }
+                InputField(weight = 3f, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
                 DropDown(weight = 3f, items = stockSizeList)
             }
 
