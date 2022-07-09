@@ -23,7 +23,7 @@ import com.medprompt.ui.*
  * NOTE: This component has to be inside a Row
  */
 @Composable
-fun RowScope.InputField (weight: Float, keyboardOptions: KeyboardOptions, placeholder: String = "") {
+fun RowScope.InputField (weight: Float, keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text), placeholder: String = "") {
     var text by remember { mutableStateOf("") }
 
     Box(
