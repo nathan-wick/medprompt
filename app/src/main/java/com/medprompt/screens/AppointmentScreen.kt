@@ -2,8 +2,8 @@ package com.medprompt.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -19,33 +19,36 @@ import com.medprompt.ui.theme.MedpromptTheme
 
 @Composable
 fun AppointmentScreen(navController: NavController) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        HeaderOptions(navController = navController, contextLabel = "Appointment")
+    MedpromptTheme {
+        Column(modifier = Modifier.fillMaxSize()) {
+            HeaderOptions(navController = navController, contextLabel = "Appointment")
 
-        Text(text = "Appointment Name")
-        Row(modifier = Modifier
-            .padding(5.dp)
-            .height(50.dp)) {
-            var medName by remember { mutableStateOf("") }
-            TextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = medName,
-                onValueChange = { medName = it }
-            )
-        }
+            Text(text = "Appointment Name")
+            Row(modifier = Modifier
+                .padding(5.dp)
+                .height(55.dp)) {
 
-        Row() {
+                var appName by remember { mutableStateOf("") }
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = appName,
+                    onValueChange = { appName = it },
+                    singleLine = true
+                )
+
+            }
+
             DateTimePicker(label = "Date and Time of Appointment")
-        }
 
-        Text(text = "Frequency of the Appointment")
-        Row(modifier = Modifier
-            .padding(5.dp)
-            .height(50.dp)) {
-            val freqList = listOf("Weeks", "Months", "Years")
+            Text(text = "Frequency of the Appointment")
+            Row(modifier = Modifier
+                .padding(5.dp)
+                .height(55.dp)) {
 
-            InputField(weight = 3f, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
-            DropDown(weight = 3f, items = freqList)
+                val freqList = listOf("Week", "Month")
+                InputField(weight = 3f, placeholder = "Times every...", keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+                DropDown(weight = 3f, items = freqList)
+            }
         }
     }
 }

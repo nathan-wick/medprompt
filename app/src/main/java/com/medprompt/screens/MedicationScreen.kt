@@ -32,7 +32,7 @@ fun MedicationScreen(navController: NavController) {
                 .padding(5.dp)
                 .height(50.dp)) {
                 var medName by remember { mutableStateOf("") }
-                TextField(
+                OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = medName,
                     onValueChange = { medName = it }

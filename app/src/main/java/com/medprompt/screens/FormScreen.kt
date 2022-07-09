@@ -3,6 +3,7 @@ package com.medprompt.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
@@ -26,7 +27,7 @@ fun FormScreen(navController: NavController) {
             .padding(5.dp)
             .height(50.dp)) {
             var formName by remember { mutableStateOf("") }
-            TextField(
+            OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = formName,
                 onValueChange = { formName = it }
