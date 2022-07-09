@@ -27,15 +27,8 @@ fun AppointmentScreen(navController: NavController) {
             Row(modifier = Modifier
                 .padding(5.dp)
                 .height(55.dp)) {
-
-                var appName by remember { mutableStateOf("") }
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = appName,
-                    onValueChange = { appName = it },
-                    singleLine = true
-                )
-
+                
+                InputField(weight = 1f)
             }
 
             DateTimePicker(label = "Date and Time of Appointment")
