@@ -26,17 +26,11 @@ fun FormScreen(navController: NavController) {
         Row(modifier = Modifier
             .padding(5.dp)
             .height(50.dp)) {
-            var formName by remember { mutableStateOf("") }
-            OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = formName,
-                onValueChange = { formName = it }
-            )
+
+            InputField(weight = 1f)
         }
 
-        Row() {
-            DateTimePicker(label = "Date and Time to complete Form ")
-        }
+        DateTimePicker(label = "Date and Time to complete Form ")
 
         Text(text = "Frequency to complete Form")
         Row(modifier = Modifier
