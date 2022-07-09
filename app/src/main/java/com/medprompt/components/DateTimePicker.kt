@@ -10,6 +10,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.medprompt.ui.theme.MedpromptTheme
 
+/**
+ * This is custom Date and Time picker. Why create this?
+ * Well, we're using this in 90% of our screens and I (Alex)
+ * wanted to isolate all the date and time logic here because
+ * it's going to be easier down the road to handle the edge cases
+ * of dates.
+ *
+ * We need to think about edge cases for our dates.
+ * For example, Feb is a month that sometimes has 29 days,
+ * but most time it has 28 days.
+ *
+ * This is only only reason why I wanted to isolate this part of the app.
+ */
 @Composable
 fun DateTimePicker (label: String) {
     Column {
