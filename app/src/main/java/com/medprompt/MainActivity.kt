@@ -2,6 +2,8 @@ package com.medprompt
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -100,11 +102,24 @@ class MainActivity : ComponentActivity() {
         createNotificationChannel()
         val date= Date()
         val notificationID=SimpleDateFormat("ddHHmmss", Locale.US).format(date).toInt()
+
+        val mainIntent= Intent(this, HomeActivity::class.java)
+        mainIntent.putExtra("MESSAGE", "You Have An Alert")
+
+        mainIntent.flags=Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        val mainPendingIntent= PendingIntent.getActivity(this, 1,mainIntent, PendingIntent.FLAG_IMMUTABLE)
+
+
         val notificationBuilder=NotificationCompat.Builder(this,"$CHANNEL_ID")
-        notificationBuilder.setSmallIcon(R.drawable.ic_Notification_Medication)
+        notificationBuilder.setSmallIcon(R.drawable.ic_notification)
         notificationBuilder.setContentTitle("Notification Title")
         notificationBuilder.setContentText("This is the multi line description")
         notificationBuilder.priority=NotificationCompat.PRIORITY_DEFAULT
+        notificationBuilder.setAutoCancel(true)
+
+        notificationBuilder.setContentIntent(mainPendingIntent)
+
+
         val notificationManagerCompat = NotificationManagerCompat.from(this)
         notificationManagerCompat.notify(notificationID, notificationBuilder.build())
     }

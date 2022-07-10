@@ -1,5 +1,6 @@
 package com.medprompt
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -31,6 +32,17 @@ public class HomeActivity : ComponentActivity() {
                     ToDoItemFacts("Android")
                 }
             }
+        }
+        onNewIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        val bundle:Bundle? = intent!!.extras
+
+        if(bundle !=null){
+            val message=bundle.getString("MESSAGE")
+            Toast.makeText(this, "$message", Toast.LENGTH_LONG).show()
         }
     }
 }
