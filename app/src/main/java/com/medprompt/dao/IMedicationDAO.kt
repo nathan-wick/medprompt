@@ -11,5 +11,6 @@ import retrofit2.http.GET
  */
 
 interface IMedicationDAO {    // Implement the @GET here to get json data
-
+    @GET("/drug/label.json?count=openfda.brand_name.exact&limit=1000")
+    fun getAllMedicines(): Call<ArrayList<Medication>>
 }
