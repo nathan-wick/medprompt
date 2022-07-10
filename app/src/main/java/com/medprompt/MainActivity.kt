@@ -17,14 +17,16 @@ import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
+import com.medprompt.dto.User
 
 // we should be able to use retrofit to get json for medication names
 
 class MainActivity : ComponentActivity() {
     lateinit var navController: NavHostController
 
-    private var user: FirebaseUser? = null
-
+    private var firebaseUser: FirebaseUser? = null
+    private lateinit var firestore : FirebaseFirestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -48,7 +50,10 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun signIn() {
-        val providers = arrayListOf(AuthUI.IdpConfig.EmailBuilder().build())
+        val providers = arrayListOf(
+            AuthUI.IdpConfig.EmailBuilder().build(),
+            AuthUI.IdpConfig.GoogleBuilder().build()
+        )
         val signinIntent = AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(providers).build()
 
         signInLauncher.launch(signinIntent)
@@ -63,9 +68,23 @@ class MainActivity : ComponentActivity() {
     private fun signInResult(result: FirebaseAuthUIAuthenticationResult){
         val response = result.idpResponse
         if (result.resultCode == RESULT_OK){
-            user = FirebaseAuth.getInstance().currentUser
+            firebaseUser = FirebaseAuth.getInstance().currentUser
+            firebaseUser?.let{
+                val user = User(it.uid, it.displayName)
+                saveUser(user)
+            }
         } else{
             Log.e("MainActivity.kt", "Error logging in" + response?.error?.errorCode)
         }
     }
+
+    fun saveUser(user : User){
+        user?.let{
+            user ->
+            val handle = firestore.collection("users").document(user.uid).set(user)
+            handle.addOnSuccessListener { Log.d("Firebase", "Document Saved")}
+            handle.addOnFailureListener {Log.e("Firebase", "Save failed $it")}
+        }
+    }
+
 }
