@@ -61,6 +61,7 @@ dependencies {
     implementation "io.insert-koin:koin-android:3.1.4"
     implementation 'com.squareup.okhttp3:okhttp:4.9.2'
     implementation 'androidx.navigation:navigation-runtime-ktx:2.3.5'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.2.0'
     // test
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0'
     testImplementation "io.mockk:mockk:1.12.2"
