@@ -16,6 +16,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.medprompt.components.*
 import com.medprompt.ui.theme.MedpromptTheme
+import com.medprompt.ui.theme.defaultPadding
+
+import com.medprompt.ui.theme.inputFieldHeight
 
 @Composable
 fun FormScreen(navController: NavController) {
@@ -24,8 +27,8 @@ fun FormScreen(navController: NavController) {
 
         Text(text = "Form Name")
         Row(modifier = Modifier
-            .padding(5.dp)
-            .height(50.dp)) {
+            .padding(defaultPadding)
+            .height(inputFieldHeight)) {
 
             InputField(weight = 1f)
         }
@@ -34,8 +37,8 @@ fun FormScreen(navController: NavController) {
 
         Text(text = "Frequency to complete Form")
         Row(modifier = Modifier
-            .padding(5.dp)
-            .height(50.dp)) {
+            .padding(defaultPadding)
+            .height(inputFieldHeight)) {
             val freqList = listOf("Weeks", "Months", "Years")
 
             InputField(weight = 3f, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
@@ -46,12 +49,14 @@ fun FormScreen(navController: NavController) {
         Text(text = "Question 1")
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Row(modifier = Modifier
-                .padding(5.dp)
-                .height(50.dp)) {
+                .padding(defaultPadding)
+                .height(inputFieldHeight)) {
                 InputField(weight = 1f, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text))
             }
-            Button(onClick = { /*TODO*/ }) {
-                Text(text = "Add Question")
+            
+            Row(modifier = Modifier
+                .padding(defaultPadding)) {
+                Button(weight = 1f, text = "Add Question")
             }
         }
     }
