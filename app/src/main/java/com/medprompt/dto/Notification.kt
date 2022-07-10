@@ -1,5 +1,6 @@
 package com.medprompt.dto
 
+import java.time.LocalDate
 import java.util.*
 
 /**
@@ -10,10 +11,11 @@ import java.util.*
  * @property frequency the frequency for every Notification : Int
  *
  */
-open class Notification(var id: Int,
-                        var name: String,
-                        var completionDate: Date,
-                        var frequency: Int
+open class Notification(
+    var id: Int,
+    var name: String,
+    var completionDate: LocalDate,
+    var frequency: Int
 ) {
 
 }
