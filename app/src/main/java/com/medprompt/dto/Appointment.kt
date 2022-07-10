@@ -1,7 +1,7 @@
 package com.medprompt.dto
-import com.google.gson.annotations.SerializedName
 // Use serialized name
 
+import java.time.LocalDate
 import java.util.*
 /**
  * * A class Appointment is noun class Data Transfer Object. Inherites Notification
@@ -10,10 +10,10 @@ import java.util.*
  * @property completionDate the completionDate for every Appointment : Date
  * @property frequency the frequency for every Appointment : Int
  */
-class Appointment(id: Int,
-                  name: String,
-                  completionDate: Date,
-                  frequency: Int
+class Appointment(id: Int = 0,
+                  name: String = "",
+                  completionDate: LocalDate = LocalDate.of(2023, 1, 1),
+                  frequency: Int = 0
 ) : Notification(id, name, completionDate, frequency) {
 
 }
