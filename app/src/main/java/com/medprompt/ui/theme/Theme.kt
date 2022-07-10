@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+val inputFieldHeight: Dp = 55.dp
 val buttonHeight: Dp = 55.dp
 val defaultPadding: Dp = 5.dp
 
