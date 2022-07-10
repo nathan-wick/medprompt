@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -13,10 +14,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.medprompt.*
-import com.medprompt.ui.theme.Blue200
-import com.medprompt.ui.theme.MedpromptTheme
-import com.medprompt.ui.theme.NavigationDrawerComposeTheme
-import com.medprompt.ui.theme.Silver100
+import com.medprompt.components.Button
+import com.medprompt.ui.theme.*
 import kotlinx.coroutines.launch
 
 @Composable
@@ -29,7 +28,8 @@ fun HomeScreen(navController: NavController) {
             AppointmentList()
 //            }
         },
-        floatingActionButton = { AddButton(navController) }
+        floatingActionButton = { AddButton(navController) },
+        floatingActionButtonPosition = FabPosition.End
     )
 }
 
@@ -153,25 +153,24 @@ fun AddButton (navController: NavController) {
     ){
 
         if (openAddOptions) {
-            Box(modifier = Modifier.width(150.dp)) {
-                Column (
-                    horizontalAlignment = Alignment.End
-                ) {
-                    Button(onClick = {
+            Column(
+                horizontalAlignment = Alignment.End,
+                modifier = Modifier.width(170.dp)
+            ) {
+                Row(modifier = Modifier.padding(defaultPadding)) {
+                    Button(text = "Medication", onClick = {
                         navController.navigate(route = Screen.Medication.route)
-                    }) {
-                        Text(text = "Medication")
-                    }
-                    Button(onClick = {
+                })
+                }
+                Row(modifier = Modifier.padding(defaultPadding)) {
+                    Button(text = "Appointment", onClick = {
                         navController.navigate(route = Screen.Appointment.route)
-                    }) {
-                        Text(text = "Appointment")
-                    }
-                    Button(onClick = {
+                    })
+                }
+                Row(modifier = Modifier.padding(defaultPadding), ) {
+                    Button(text = "Form", onClick = {
                         navController.navigate(route = Screen.Form.route)
-                    }) {
-                        Text(text = "Form")
-                    }
+                    })
                 }
             }
         }
@@ -185,7 +184,6 @@ fun AddButton (navController: NavController) {
             )
         }
     }
-
 }
 
 @Preview(showBackground = true)

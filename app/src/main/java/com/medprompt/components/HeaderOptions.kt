@@ -13,26 +13,26 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.medprompt.Screen
 import com.medprompt.ui.theme.MedpromptTheme
+import com.medprompt.ui.theme.buttonHeight
+import com.medprompt.ui.theme.defaultPadding
 
 @Composable
 fun HeaderOptions (navController: NavController, contextLabel: String) {
-    Row(modifier = Modifier
-        .padding(5.dp)
-        .height(50.dp)) {
+    Row(modifier = Modifier.height(buttonHeight).padding(defaultPadding)) {
         Button(
-            modifier = Modifier
-                .weight(1f)
-                .padding(5.dp), onClick = {
-                navController.navigate(route = Screen.Home.route)
-            }) {
-            Text(text = "Cancel")
-        }
-        Button(modifier = Modifier
-            .weight(2f)
-            .padding(5.dp), onClick = { /*TODO*/ }) {
-            // TODO: This has to say "Update Medication" if updating
-            Text(text = "Add $contextLabel")
-        }
+            weight = 1f,
+            text = "Cancel",
+            onClick = {
+            navController.navigate(route = Screen.Home.route)
+        })
+
+        // TODO: make this say "Update ..." if the user is updating the form
+        Button(
+            weight = 2f,
+            text = "Add $contextLabel",
+            onClick = {
+            /* TODO onClick */
+        })
     }
 }
 
