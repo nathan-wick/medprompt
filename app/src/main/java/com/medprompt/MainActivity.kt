@@ -1,5 +1,8 @@
 package com.medprompt
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -9,6 +12,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.medprompt.ui.theme.MedpromptTheme
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -19,6 +24,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.medprompt.dto.User
+import java.text.SimpleDateFormat
+import java.util.*
 
 // we should be able to use retrofit to get json for medication names
 
@@ -27,6 +34,9 @@ class MainActivity : ComponentActivity() {
 
     private var firebaseUser: FirebaseUser? = null
     private lateinit var firestore : FirebaseFirestore
+    private companion object{
+        private const val CHANNEL_ID = "channel01"
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -86,5 +96,28 @@ class MainActivity : ComponentActivity() {
             handle.addOnFailureListener {Log.e("Firebase", "Save failed $it")}
         }
     }
+    fun showNotification(){
+        createNotificationChannel()
+        val date= Date()
+        val notificationID=SimpleDateFormat("ddHHmmss", Locale.US).format(date).toInt()
+        val notificationBuilder=NotificationCompat.Builder(this,"$CHANNEL_ID")
+        notificationBuilder.setSmallIcon(R.drawable.ic_Notification_Medication)
+        notificationBuilder.setContentTitle("Notification Title")
+        notificationBuilder.setContentText("This is the multi line description")
+        notificationBuilder.priority=NotificationCompat.PRIORITY_DEFAULT
+        val notificationManagerCompat = NotificationManagerCompat.from(this)
+        notificationManagerCompat.notify(notificationID, notificationBuilder.build())
+    }
+    private fun createNotificationChannel(){
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            val name: CharSequence="MyNotification"
+            val description="My Notification channel description"
+            val importance= NotificationManager.IMPORTANCE_DEFAULT
+            val notificationChannel=NotificationChannel(CHANNEL_ID, name, importance)
+            notificationChannel.description=description
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(notificationChannel)
 
+        }
+    }
 }
