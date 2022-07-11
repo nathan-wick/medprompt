@@ -12,8 +12,14 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.window.PopupProperties
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.medprompt.ui.theme.MedpromptTheme
@@ -25,6 +31,7 @@ import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.medprompt.dto.Medication
 import com.medprompt.dto.User
 import java.text.SimpleDateFormat
 import java.util.*
@@ -33,7 +40,6 @@ import java.util.*
 
 class MainActivity : ComponentActivity() {
     lateinit var navController: NavHostController
-
     private var firebaseUser: FirebaseUser? = null
     private lateinit var firestore : FirebaseFirestore
     private companion object{
@@ -135,4 +141,5 @@ class MainActivity : ComponentActivity() {
 
         }
     }
+
 }
