@@ -1,5 +1,5 @@
 package com.medprompt.dto
 
-class MedicationName {
+class APIMedicationName {
 
 }
