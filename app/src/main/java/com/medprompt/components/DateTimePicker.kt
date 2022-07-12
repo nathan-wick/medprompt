@@ -60,7 +60,7 @@ fun DateTimePicker (label: String) {
                     val timePickerDialogListener: TimePickerDialog.OnTimeSetListener =
                         object : TimePickerDialog.OnTimeSetListener {
                             override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-
+                                // this formatting code implemented from https://www.geeksforgeeks.org/time-picker-dialog-in-android/
                                 // logic to properly handle the picked timings by user
                                 formattedTime = when {
                                     hourOfDay == 0 -> {
