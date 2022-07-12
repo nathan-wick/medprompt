@@ -19,6 +19,7 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.PopupProperties
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -142,4 +143,11 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @Preview(showBackground = true)
+    @Composable
+    fun DefaultPreview2() {
+        MedpromptTheme {
+            startingScreen()
+        }
+    }
 }
