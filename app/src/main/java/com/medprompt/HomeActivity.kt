@@ -5,10 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -39,7 +36,7 @@ public class HomeActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    ToDoItemFacts("Android")
+                    ToDoItemFacts()
                 }
             }
         }
@@ -62,7 +59,7 @@ public class HomeActivity : ComponentActivity() {
      * Create a "Save" onClick button
      */
     @Composable
-    fun ToDoItemFacts(name: String) {
+    fun ToDoItemFacts() {
         var itemName by remember { mutableStateOf("") }
         var timeOfDay by remember { mutableStateOf("") }
         var frequency by remember { mutableStateOf("") }
@@ -82,7 +79,8 @@ public class HomeActivity : ComponentActivity() {
             )
             OutlinedTextField(value = frequency,
                 onValueChange = { frequency = it },
-                label = { Text(stringResource(R.string.frequency)) }
+                label = { Text(stringResource(R.string.frequency))},
+                modifier = Modifier.width(IntrinsicSize.Min)
             )
             OutlinedTextField(value = doseSize,
                 onValueChange = { doseSize = it },
@@ -191,7 +189,7 @@ public class HomeActivity : ComponentActivity() {
     @Composable
     fun DefaultPreview2() {
         MedpromptTheme {
-            ToDoItemFacts(name = "")
+            ToDoItemFacts()
         }
     }
 }
