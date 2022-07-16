@@ -9,6 +9,7 @@ import java.util.*
  * @property stockSize the stockSize for every Medication : Int
  * @property stockMetricType the stockMetricType for every Medication : Int
  */
+
 public class Medication(doseSize: Int,
                  doseMetricType: Int,
                  stockSize: Int,
