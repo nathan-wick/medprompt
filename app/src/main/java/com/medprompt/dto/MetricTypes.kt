@@ -5,8 +5,7 @@ package com.medprompt.dto
  * @property id the id for every MetricTypes : Int
  * @property name the name for every MetricTypes : String
  */
-public class MetricTypes(var id: Int,
-                  var name: String
-) {
+public class MetricTypes(var id: Int, var name: String)
+{
 
 }

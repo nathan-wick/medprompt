@@ -10,14 +10,7 @@ import java.util.*
  * @property stockMetricType the stockMetricType for every Medication : Int
  */
 
-public class Medication(doseSize: Int,
-                 doseMetricType: Int,
-                 stockSize: Int,
-                 stockMetricType: Int,
-                 id: Int,
-                 name: String,
-                 completionDateTime: Date,
-                 frequency: Int
-) : Notification(id, name, completionDateTime, frequency) {
+public class Medication(doseSize: Int, doseMetricType: Int, stockSize: Int, stockMetricType: Int, id: Int, name: String, completionDateTime: Date, frequency: Int) : Notification(id, name, completionDateTime, frequency)
+{
 
 }

@@ -10,11 +10,7 @@ import kotlin.collections.ArrayList
  * @property completionDate the completionDate for every Form : Date
  * @property frequency the frequency for every Form : Int
  */
-public class Form(questions: ArrayList<String>,
-           id: Int,
-           name: String,
-           completionDate: Date,
-           frequency: Int
-) : Notification(id, name, completionDate, frequency) {
+public class Form(questions: ArrayList<String>, id: Int, name: String, completionDate: Date, frequency: Int) : Notification(id, name, completionDate, frequency)
+{
 
 }
