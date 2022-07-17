@@ -13,5 +13,4 @@ import retrofit2.http.GET
 interface IAppointmentDAO {    // Implement the @GET here to get json
 
 
-
 }

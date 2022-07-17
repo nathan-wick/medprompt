@@ -19,7 +19,7 @@ class NotificationService {
         {
             val Notifications = async { service?.fetchNotifaction() }
         }
-        
+
     }
 
 
