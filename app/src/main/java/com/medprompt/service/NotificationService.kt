@@ -13,15 +13,7 @@ import retrofit2.awaitResponse
 
 class NotificationService {
 
-    suspend fun fetchNotification(): List<Notification>? {
-
-        return withContext(Dispatchers.ID)
-        {
-            val Notifications = async { service?.fetchNotifaction() }
-        }
-
-    }
-
+  
 
 
 
