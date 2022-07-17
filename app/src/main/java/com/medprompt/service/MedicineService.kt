@@ -13,8 +13,7 @@ class MedicineService {
        return withContext(Dispatchers.IO){
             val service=RetrofitClientInstance.retrofitInstance?.create(IMedicationDAO::class.java)
             val medicine= async {service?.getAllMedicines()}
-            var result= medicine.await()?.awaitResponse()?.body()
-            return@withContext result
+            return@withContext medicine.await()?.awaitResponse()?.body()
         }
     }
 }

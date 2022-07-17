@@ -51,7 +51,10 @@ fun RowScope.InputField (weight: Float, keyboardOptions: KeyboardOptions = Keybo
 fun InputField_Preview() {
     MedpromptTheme {
         Row() {
-            InputField(weight = 3f, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+            InputField(
+                weight = 3f,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
         }
     }
 }
