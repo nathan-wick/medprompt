@@ -1,14 +1,18 @@
 package com.medprompt
 
+import android.app.Activity.RESULT_OK
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.Context
+import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -22,6 +26,10 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.window.PopupProperties
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.medprompt.ui.theme.MedpromptTheme
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -38,7 +46,7 @@ import java.util.*
 
 // we should be able to use retrofit to get json for medication names
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     lateinit var navController: NavHostController
     private var firebaseUser: FirebaseUser? = null
     private lateinit var firestore : FirebaseFirestore
@@ -46,6 +54,9 @@ class MainActivity : ComponentActivity() {
         private const val CHANNEL_ID = "channel01"
     }
     override fun onCreate(savedInstanceState: Bundle?) {
+        //Hides systems bars. See method below
+        hideSystemBars()
+        supportActionBar?.hide()
         super.onCreate(savedInstanceState)
         setContent {
             MedpromptTheme {
@@ -60,7 +71,17 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
+    //Hides system bars. Swipe to bring bars back
+    private fun hideSystemBars() {
+        val windowInsetsController =
+            //YOU WILL NEED TO CHANGE findViewById(R.id.IDVIEW) for each view you have
+            //Put the hideSystemBars() method in your other activities to use
+            WindowCompat.getInsetsController(window, findViewById(R.id.HomeScreen))
+        windowInsetsController.systemBarsBehavior =
+            WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_SWIPE
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+    }
+}
 
     @Composable
     private fun startingScreen() {
@@ -77,35 +98,36 @@ class MainActivity : ComponentActivity() {
         signInLauncher.launch(signinIntent)
     }
 
-    private val signInLauncher = registerForActivityResult(
-        FirebaseAuthUIActivityResultContract()
-    ){
+
+//I do not know what this is for
+    private val signInLauncher = registerForActivityResult
+        registerForActivityResult(FirebaseAuthUIActivityResultContract()){
         res -> this.signInResult(res)
     }
 
-    private fun signInResult(result: FirebaseAuthUIAuthenticationResult){
+    private fun signInResult(result: FirebaseAuthUIAuthenticationResult, firebaseUser: FirebaseUser, firestore: FirebaseFirestore){
         val response = result.idpResponse
         if (result.resultCode == RESULT_OK){
-            firebaseUser = FirebaseAuth.getInstance().currentUser
-            firebaseUser?.let{
+            FirebaseAuth.getInstance().currentUser!!
+            firebaseUser.let{
                 val user = User(it.uid, it.displayName)
-                saveUser(user)
+                saveUser(user, firestore)
             }
         } else{
             Log.e("MainActivity.kt", "Error logging in" + response?.error?.errorCode)
         }
     }
 
-    fun saveUser(user : User){
-        user?.let{
-            user ->
+    fun saveUser(user : User, firestore: FirebaseFirestore){
+        user.let{
+                user ->
             val handle = firestore.collection("users").document(user.uid).set(user)
             handle.addOnSuccessListener { Log.d("Firebase", "Document Saved")}
             handle.addOnFailureListener {Log.e("Firebase", "Save failed $it")}
         }
     }
-    fun showNotification(){
-        createNotificationChannel()
+    fun showNotification(CHANNEL_ID: String, context: Context){
+        createNotificationChannel(CHANNEL_ID, context)
         val date= Date()
         val notificationID=SimpleDateFormat("ddHHmmss", Locale.US).format(date).toInt()
 
@@ -129,17 +151,15 @@ class MainActivity : ComponentActivity() {
         val notificationManagerCompat = NotificationManagerCompat.from(this)
         notificationManagerCompat.notify(notificationID, notificationBuilder.build())
     }
-    private fun createNotificationChannel(){
+    private fun createNotificationChannel(CHANNEL_ID: String, context: Context){
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
             val name: CharSequence="MyNotification"
             val description="My Notification channel description"
             val importance= NotificationManager.IMPORTANCE_DEFAULT
             val notificationChannel=NotificationChannel(CHANNEL_ID, name, importance)
             notificationChannel.description=description
-            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            val notificationManager = getSystemService(context) as NotificationManager
             notificationManager.createNotificationChannel(notificationChannel)
 
         }
     }
-
-}
