@@ -10,10 +10,7 @@ import java.util.*
  * @property completionDate the completionDate for every Appointment : Date
  * @property frequency the frequency for every Appointment : Int
  */
-class Appointment(id: Int,
-                  name: String,
-                  completionDate: Date,
-                  frequency: Int
-) : Notification(id, name, completionDate, frequency) {
+class Appointment(id: Int,name: String, completionDate: Date, frequency: Int) : Notification(id, name, completionDate, frequency)
+{
 
 }
