@@ -10,6 +10,8 @@ import retrofit2.http.GET
  * Interface for RetrofitClientInstance
  */
 
-interface IAppointmentDAO {    // Implement the @GET here to get json data
+interface IAppointmentDAO {    // Implement the @GET here to get json
+
+
 
 }
