@@ -57,26 +57,26 @@ fun AppHeader() {
                     items = listOf(
                         MenuItem(
                             id = "home",
-                            title = "Home",
-                            contentDescription = "Go to home screen",
-                            icon = Icons.Default.Home
+                            Title = "Home",
+                            ContentDescription = "Go to home screen",
+                            Icon = Icons.Default.Home
                         ),
                         MenuItem(
                             id = "account",
-                            title = "My Account",
-                            contentDescription = "Manage my account",
-                            icon = Icons.Default.AccountCircle
+                            Title = "My Account",
+                            ContentDescription = "Manage my account",
+                            Icon = Icons.Default.AccountCircle
                         ),
                         MenuItem(
                             id = "signout",
-                            title = "Sign Out",
-                            contentDescription = "Sign out",
-                            icon = Icons.Default.ArrowBack
+                            Title = "Sign Out",
+                            ContentDescription = "Sign out",
+                            Icon = Icons.Default.ArrowBack
                         ),
                     ),
                     onItemClick = {
                         // TODO: Change screen on item click
-                        println("Clicked on ${it.title}")
+                        println("Clicked on ${it.Title}")
                     }
                 )
             }
