@@ -55,12 +55,11 @@ class MainActivity : ComponentActivity() {
                 ) {
                     navController = rememberNavController()
                     SetupNavGraph(navController = navController)
-                    startingScreen()
+//                    startingScreen()
                 }
             }
         }
     }
-
 
     @Composable
     private fun startingScreen() {
