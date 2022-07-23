@@ -38,13 +38,8 @@ import com.medprompt.ui.theme.defaultPadding
 import java.text.SimpleDateFormat
 import java.util.*
 
-// we should be able to use retrofit to get json for medication names
-
 class MainActivity : ComponentActivity() {
     lateinit var navController: NavHostController
-    private lateinit var auth: FirebaseAuth;
-    private var firebaseUser: FirebaseUser? = null
-    private lateinit var firestore : FirebaseFirestore
     private companion object{
         private const val CHANNEL_ID = "channel01"
     }
@@ -52,13 +47,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MedpromptTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     navController = rememberNavController()
                     SetupNavGraph(navController = navController)
-                    auth = com.google.firebase.auth.FirebaseAuth.getInstance()
                 }
             }
         }
@@ -105,7 +98,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
-
     }
 
 }
