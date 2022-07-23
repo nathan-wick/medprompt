@@ -4,10 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.medprompt.screens.AppointmentScreen
-import com.medprompt.screens.FormScreen
-import com.medprompt.screens.HomeScreen
-import com.medprompt.screens.MedicationScreen
+import com.medprompt.screens.*
 
 @Composable
 fun SetupNavGraph(navController: NavHostController) {

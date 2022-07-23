@@ -1,4 +1,4 @@
-package com.medprompt
+package com.medprompt.components
 
 import androidx.compose.ui.graphics.vector.ImageVector
 

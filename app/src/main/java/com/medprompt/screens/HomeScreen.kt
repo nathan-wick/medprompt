@@ -1,20 +1,28 @@
 package com.medprompt.screens
 
+import android.content.Intent
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
 import com.medprompt.*
 import com.medprompt.components.Button
+import com.medprompt.components.DrawerBody
+import com.medprompt.components.DrawerHeader
+import com.medprompt.components.MenuItem
 import com.medprompt.ui.theme.*
 import kotlinx.coroutines.launch
 
@@ -25,7 +33,7 @@ fun HomeScreen(navController: NavController) {
 //            Row {
 //            TODO: Implement Nathan's changes to mine
 //                AppHeader()
-            AppointmentList()
+            AppointmentList(navController)
 //            }
         },
         floatingActionButton = { AddButton(navController) },
@@ -34,101 +42,79 @@ fun HomeScreen(navController: NavController) {
 }
 
 @Composable
-fun AppHeader() {
-    NavigationDrawerComposeTheme {
-        val scaffoldState = rememberScaffoldState()
-        val scope = rememberCoroutineScope()
+fun AppointmentList(navController: NavController) {
+    val context = LocalContext.current
+    lateinit var auth: FirebaseAuth;
+    var firebaseUser: FirebaseUser? = null
+    lateinit var firestore : FirebaseFirestore
 
-        Scaffold (
-            scaffoldState = scaffoldState,
-            topBar = {
-                AppBar(
-                    onNavigationIconClick = {
-                        scope.launch {
-                            scaffoldState.drawerState.open()
-                        }
+    val scaffoldState = rememberScaffoldState()
+    val scope = rememberCoroutineScope()
+
+    Scaffold (
+        scaffoldState = scaffoldState,
+        topBar = {
+            com.medprompt.components.AppBar(
+                onNavigationIconClick = {
+                    scope.launch {
+                        scaffoldState.drawerState.open()
                     }
-                )
-            },
-            drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
-            drawerContent = {
-                DrawerHeader()
-                DrawerBody(
-                    items = listOf(
-                        MenuItem(
-                            id = "home",
-                            title = "Home",
-                            contentDescription = "Go to home screen",
-                            icon = Icons.Default.Home
-                        ),
-                        MenuItem(
-                            id = "account",
-                            title = "My Account",
-                            contentDescription = "Manage my account",
-                            icon = Icons.Default.AccountCircle
-                        ),
-                        MenuItem(
-                            id = "signout",
-                            title = "Sign Out",
-                            contentDescription = "Sign out",
-                            icon = Icons.Default.ArrowBack
-                        ),
-                    ),
-                    onItemClick = {
-                        // TODO: Change screen on item click
-                        println("Clicked on ${it.title}")
-                    }
-                )
-            }
-        ) {
-
-        }
-    }
-}
-
-@Composable
-fun AppointmentList() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(vertical = 30.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Surface(
-            modifier = Modifier
-                .width(350.dp)
-                .height(50.dp),
-            color = MaterialTheme.colors.primary
-        ) {
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.padding(horizontal = 10.dp)
-            ) {
-                Text(text = "MedPrompt")
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        imageVector = Icons.Filled.Menu,
-                        contentDescription = "Menu",
-                        modifier = Modifier.padding(horizontal = 10.dp)
-                    )
                 }
+            )
+        },
+        drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
+        drawerContent = {
+            DrawerHeader()
+            DrawerBody(
+                items = listOf(
+                    MenuItem(
+                        id = "home",
+                        title = "Home",
+                        contentDescription = "Go to home screen",
+                        icon = Icons.Default.Home
+                    ),
+                    MenuItem(
+                        id = "login",
+                        title = "Login",
+                        contentDescription = "Login in using your account",
+                        icon = Icons.Default.Person
+                    ),
+                    MenuItem(
+                        id = "account",
+                        title = "My Account",
+                        contentDescription = "Manage my account",
+                        icon = Icons.Default.AccountCircle
+                    ),
+                    MenuItem(
+                        id = "signout",
+                        title = "Sign Out",
+                        contentDescription = "Sign out",
+                        icon = Icons.Default.ArrowBack
+                    ),
+                ),
+                onItemClick = {
+                    if (it.id == "login") {
+                        context.startActivity(Intent(context, LoginActivity::class.java))
+                    }
+                }
+            )
+        },
+        content = {
+            Column {
+                AppItem(appText = "Complete Diet Form", appDate = "TODAY, 9:00 PM")
+                AppItem(appText = "Inflectra Treatment", appDate = "MAY 12, 10:00 PM")
+                AppItem(appText = "Take Methotrexate", appDate = "MAY 12, 9:00 PM")
+                AppItem(appText = "Refill Methotrexate", appDate = "AUGUST 12")
             }
         }
-
-        AppItem(appText = "Complete Diet Form", appDate = "TODAY, 9:00 PM")
-        AppItem(appText = "Inflectra Treatment", appDate = "MAY 12, 10:00 PM")
-        AppItem(appText = "Take Methotrexate", appDate = "MAY 12, 9:00 PM")
-        AppItem(appText = "Refill Methotrexate", appDate = "AUGUST 12")
-
-    }
+    )
 }
 
 @Composable
 fun AppItem(appText : String, appDate: String) {
     Surface(
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .height(50.dp)
             .padding(vertical = 1.dp),
         color = Silver100
