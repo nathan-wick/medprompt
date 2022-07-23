@@ -23,9 +23,7 @@ import com.medprompt.ui.*
  * NOTE: This component has to be inside a Row
  */
 @Composable
-fun RowScope.InputField (weight: Float, keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text), placeholder: String = "") {
-    var text by remember { mutableStateOf("") }
-
+fun RowScope.InputField (weight: Float, keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text), placeholder: String = "", value: String= "", onValueChange: (String) -> Unit = {}) {
     Box(
         modifier = Modifier
             .height(55.dp)
@@ -33,8 +31,8 @@ fun RowScope.InputField (weight: Float, keyboardOptions: KeyboardOptions = Keybo
             .weight(weight)
     ) {
         OutlinedTextField(
-            value = text,
-            onValueChange = { text = it },
+            value = value,
+            onValueChange = onValueChange,
             keyboardOptions = keyboardOptions,
             singleLine = true,
             placeholder = { Text(text = placeholder) },

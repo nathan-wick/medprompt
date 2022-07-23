@@ -31,8 +31,10 @@ import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.medprompt.components.Button
 import com.medprompt.dto.Medication
 import com.medprompt.dto.User
+import com.medprompt.ui.theme.defaultPadding
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,6 +42,7 @@ import java.util.*
 
 class MainActivity : ComponentActivity() {
     lateinit var navController: NavHostController
+    private lateinit var auth: FirebaseAuth;
     private var firebaseUser: FirebaseUser? = null
     private lateinit var firestore : FirebaseFirestore
     private companion object{
@@ -55,60 +58,18 @@ class MainActivity : ComponentActivity() {
                 ) {
                     navController = rememberNavController()
                     SetupNavGraph(navController = navController)
-//                    startingScreen()
+                    auth = com.google.firebase.auth.FirebaseAuth.getInstance()
                 }
             }
         }
     }
 
-    @Composable
-    private fun startingScreen() {
-        Button(onClick = {signIn()}) {Text(text = stringResource(R.string.Logon))}
-    }
-
-    private fun signIn() {
-        val providers = arrayListOf(
-            AuthUI.IdpConfig.EmailBuilder().build(),
-            AuthUI.IdpConfig.GoogleBuilder().build()
-        )
-        val signinIntent = AuthUI.getInstance().createSignInIntentBuilder().setAvailableProviders(providers).build()
-
-        signInLauncher.launch(signinIntent)
-    }
-
-    private val signInLauncher = registerForActivityResult(
-        FirebaseAuthUIActivityResultContract()
-    ){
-        res -> this.signInResult(res)
-    }
-
-    private fun signInResult(result: FirebaseAuthUIAuthenticationResult){
-        val response = result.idpResponse
-        if (result.resultCode == RESULT_OK){
-            firebaseUser = FirebaseAuth.getInstance().currentUser
-            firebaseUser?.let{
-                val user = User(it.uid, it.displayName)
-                saveUser(user)
-            }
-        } else{
-            Log.e("MainActivity.kt", "Error logging in" + response?.error?.errorCode)
-        }
-    }
-
-    fun saveUser(user : User){
-        user?.let{
-            user ->
-            val handle = firestore.collection("users").document(user.uid).set(user)
-            handle.addOnSuccessListener { Log.d("Firebase", "Document Saved")}
-            handle.addOnFailureListener {Log.e("Firebase", "Save failed $it")}
-        }
-    }
     fun showNotification(){
         createNotificationChannel()
         val date= Date()
         val notificationID=SimpleDateFormat("ddHHmmss", Locale.US).format(date).toInt()
 
-        val mainIntent= Intent(this, HomeActivity::class.java)
+        val mainIntent= Intent(this, MainActivity::class.java)
         mainIntent.putExtra("MESSAGE", "You Have An Alert")
 
         mainIntent.flags=Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -128,6 +89,7 @@ class MainActivity : ComponentActivity() {
         val notificationManagerCompat = NotificationManagerCompat.from(this)
         notificationManagerCompat.notify(notificationID, notificationBuilder.build())
     }
+
     private fun createNotificationChannel(){
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
             val name: CharSequence="MyNotification"
@@ -139,6 +101,11 @@ class MainActivity : ComponentActivity() {
             notificationManager.createNotificationChannel(notificationChannel)
 
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
     }
 
 }

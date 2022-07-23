@@ -10,12 +10,8 @@ import com.medprompt.screens.*
 fun SetupNavGraph(navController: NavHostController) {
     NavHost(
         navController =  navController,
-        startDestination = Screen.Login.route
+        startDestination = Screen.Home.route
     ) {
-        composable(
-            route = Screen.Login.route,
-            content = { LoginScreen(navController = navController) }
-        )
         composable(
             route = Screen.Home.route,
             content = { HomeScreen(navController = navController) }
