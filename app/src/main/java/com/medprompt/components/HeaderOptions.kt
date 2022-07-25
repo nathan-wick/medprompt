@@ -17,7 +17,7 @@ import com.medprompt.ui.theme.buttonHeight
 import com.medprompt.ui.theme.defaultPadding
 
 @Composable
-fun HeaderOptions (navController: NavController, contextLabel: String) {
+fun HeaderOptions (navController: NavController, contextLabel: String, addButtonOnClick: () -> Unit = { /*TODO onClick*/ }) {
     Row(modifier = Modifier.height(buttonHeight).padding(defaultPadding)) {
         Button(
             weight = 1f,
@@ -30,9 +30,8 @@ fun HeaderOptions (navController: NavController, contextLabel: String) {
         Button(
             weight = 2f,
             text = "Add $contextLabel",
-            onClick = {
-            /* TODO onClick */
-        })
+            onClick = addButtonOnClick
+        )
     }
 }
 
