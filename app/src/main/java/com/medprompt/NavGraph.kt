@@ -7,26 +7,26 @@ import androidx.navigation.compose.composable
 import com.medprompt.screens.*
 
 @Composable
-fun SetupNavGraph(navController: NavHostController) {
+fun SetupNavGraph(appState: AppState) {
     NavHost(
-        navController =  navController,
+        navController =  appState.navController,
         startDestination = Screen.Home.route
     ) {
         composable(
             route = Screen.Home.route,
-            content = { HomeScreen(navController = navController) }
+            content = { HomeScreen(appState) }
         )
         composable(
             route = Screen.Medication.route,
-            content = { MedicationScreen(navController = navController) }
+            content = { MedicationScreen(navController = appState.navController) }
         )
         composable(
             route = Screen.Appointment.route,
-            content = { AppointmentScreen(navController = navController) }
+            content = { AppointmentScreen(navController = appState.navController) }
         )
         composable(
             route = Screen.Form.route,
-            content = { FormScreen(navController = navController) }
+            content = { FormScreen(navController = appState.navController) }
         )
     }
 }

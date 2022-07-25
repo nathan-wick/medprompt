@@ -1,6 +1,8 @@
 package com.medprompt.screens
 
+import android.content.Context
 import android.content.Intent
+import androidx.compose.foundation.clickable
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -15,41 +17,39 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.firebase.ui.auth.AuthUI
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.medprompt.*
 import com.medprompt.components.Button
-import com.medprompt.components.DrawerBody
 import com.medprompt.components.DrawerHeader
-import com.medprompt.components.MenuItem
 import com.medprompt.ui.theme.*
 import kotlinx.coroutines.launch
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(appState: AppState) {
+    val context = LocalContext.current
     Scaffold(
         content = {
-//            Row {
-//            TODO: Implement Nathan's changes to mine
-//                AppHeader()
-            AppointmentList(navController)
-//            }
+            AppointmentList(appState, context)
         },
-        floatingActionButton = { AddButton(navController) },
+        floatingActionButton = { AddButton(appState.navController) },
         floatingActionButtonPosition = FabPosition.End
     )
 }
 
 @Composable
-fun AppointmentList(navController: NavController) {
-    val context = LocalContext.current
-    lateinit var auth: FirebaseAuth;
-    var firebaseUser: FirebaseUser? = null
-    lateinit var firestore : FirebaseFirestore
+fun AppointmentList(appState: AppState, context: Context) {
+    val scaffoldState = appState.scaffoldState
+    val scope = appState.scope
 
-    val scaffoldState = rememberScaffoldState()
-    val scope = rememberCoroutineScope()
+    var user by remember { mutableStateOf(FirebaseAuth.getInstance().currentUser) }
+
+    FirebaseAuth.AuthStateListener {
+        user = it.currentUser
+    }
 
     Scaffold (
         scaffoldState = scaffoldState,
@@ -65,39 +65,68 @@ fun AppointmentList(navController: NavController) {
         drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
         drawerContent = {
             DrawerHeader()
-            DrawerBody(
-                items = listOf(
-                    MenuItem(
-                        id = "home",
-                        title = "Home",
-                        contentDescription = "Go to home screen",
-                        icon = Icons.Default.Home
-                    ),
-                    MenuItem(
-                        id = "login",
-                        title = "Login",
-                        contentDescription = "Login in using your account",
-                        icon = Icons.Default.Person
-                    ),
-                    MenuItem(
-                        id = "account",
-                        title = "My Account",
-                        contentDescription = "Manage my account",
-                        icon = Icons.Default.AccountCircle
-                    ),
-                    MenuItem(
-                        id = "signout",
-                        title = "Sign Out",
-                        contentDescription = "Sign out",
-                        icon = Icons.Default.ArrowBack
-                    ),
-                ),
-                onItemClick = {
-                    if (it.id == "login") {
-                        context.startActivity(Intent(context, LoginActivity::class.java))
-                    }
+            if (user != null) {
+                Row (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            AuthUI
+                                .getInstance()
+                                .signOut(context)
+                                .addOnCompleteListener(OnCompleteListener {
+                                    if (it.isComplete) {
+                                        appState.navController.navigate(Screen.Home.route)
+                                    }
+                                })
+
+                            appState.navController.navigate(Screen.Home.route)
+                        },
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        modifier = Modifier.size(40.dp),
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "Sign Out Icon",
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Text(
+                        text = "Sign Out",
+                        modifier = Modifier
+                            .height(100.dp)
+                            .wrapContentHeight()
+                    )
                 }
-            )
+            }
+            else {
+                Row (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            context.startActivity(
+                                Intent(
+                                    context,
+                                    LoginActivity::class.java
+                                )
+                            )
+                        },
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        modifier = Modifier.size(40.dp),
+                        imageVector = Icons.Filled.AccountCircle,
+                        contentDescription = "Account Login Icon",
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Text(
+                        text = "Login / Signup",
+                        modifier = Modifier
+                            .height(100.dp)
+                            .wrapContentHeight()
+                    )
+                }
+            }
         },
         content = {
             Column {
@@ -176,6 +205,6 @@ fun AddButton (navController: NavController) {
 @Composable
 fun DefaultPreview() {
     MedpromptTheme {
-        HomeScreen(navController = rememberNavController())
+        HomeScreen(appState = AppState(rememberScaffoldState(), rememberNavController(), rememberCoroutineScope()))
     }
 }
