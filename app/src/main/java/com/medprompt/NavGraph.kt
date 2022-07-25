@@ -22,7 +22,7 @@ fun SetupNavGraph(appState: AppState) {
         )
         composable(
             route = Screen.Appointment.route,
-            content = { AppointmentScreen(navController = appState.navController) }
+            content = { AppointmentScreen(appState = appState) }
         )
         composable(
             route = Screen.Form.route,

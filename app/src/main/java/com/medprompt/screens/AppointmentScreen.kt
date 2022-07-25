@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -11,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.medprompt.AppState
 import com.medprompt.components.DateTimePicker
 import com.medprompt.components.DropDown
 import com.medprompt.components.HeaderOptions
@@ -18,10 +20,10 @@ import com.medprompt.components.InputField
 import com.medprompt.ui.theme.MedpromptTheme
 
 @Composable
-fun AppointmentScreen(navController: NavController) {
+fun AppointmentScreen(appState: AppState) {
     MedpromptTheme {
         Column(modifier = Modifier.fillMaxSize()) {
-            HeaderOptions(navController = navController, contextLabel = "Appointment")
+            HeaderOptions(navController = appState.navController, contextLabel = "Appointment")
 
             Text(text = "Appointment Name")
             Row(modifier = Modifier
@@ -50,6 +52,6 @@ fun AppointmentScreen(navController: NavController) {
 @Composable
 fun AppointmentScreen_Preview() {
     MedpromptTheme {
-        AppointmentScreen(navController = rememberNavController())
+        AppointmentScreen(appState = AppState(rememberScaffoldState(), rememberNavController(), rememberCoroutineScope()))
     }
 }
