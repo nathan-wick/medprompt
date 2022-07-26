@@ -99,7 +99,7 @@ fun MedicationScreen(appState: AppState) {
         Row(modifier = Modifier
             .padding(defaultPadding)
             .height(50.dp)) {
-            val freqList = listOf("Weeks", "Months", "Years")
+            val freqList = listOf("Week", "Month", "Year")
 
             InputField(
                 placeholder = "Times every...",

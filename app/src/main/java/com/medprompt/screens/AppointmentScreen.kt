@@ -53,7 +53,7 @@ fun AppointmentScreen(appState: AppState) {
     var freqAmount by remember { mutableStateOf(1) }
 
     var isOpen by remember { mutableStateOf(false) }
-    val freqList = listOf("Week", "Month")
+    val freqList = listOf("Week", "Month", "Year")
     var freqTypeSelectedIndex by remember { mutableStateOf(0) }
     var freqType by remember { mutableStateOf(freqList[freqTypeSelectedIndex]) }
 

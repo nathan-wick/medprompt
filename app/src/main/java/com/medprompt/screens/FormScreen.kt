@@ -36,7 +36,7 @@ fun FormScreen(navController: NavController) {
         Row(modifier = Modifier
             .padding(defaultPadding)
             .height(inputFieldHeight)) {
-            val freqList = listOf("Weeks", "Months", "Years")
+            val freqList = listOf("Week", "Month", "Year")
 
             InputField(weight = 3f, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
             DropDown(weight = 3f, items = freqList)
