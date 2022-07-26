@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1007495763285-jsq2ko4tot8p3ifeupldr1oqrdli9fjk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.medprompt",
+            "certificate_hash": "3e5bc03a6ec20646279bd2cf056261bd6550ceaa"
+          }
+        },
+        {
           "client_id": "1007495763285-gm8db6geuv6c617onvnb6q0q4u1n49es.apps.googleusercontent.com",
           "client_type": 3
         }
