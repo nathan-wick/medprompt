@@ -2,9 +2,10 @@ package com.medprompt.screens
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.clickable
-
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -20,13 +21,17 @@ import androidx.navigation.compose.rememberNavController
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.medprompt.*
 import com.medprompt.components.Button
 import com.medprompt.components.DrawerHeader
 import com.medprompt.ui.theme.*
 import kotlinx.coroutines.launch
+
+data class HomeFeedItem(
+    val title: String,
+    val datetime: String
+)
 
 @Composable
 fun HomeScreen(appState: AppState) {
@@ -45,11 +50,9 @@ fun AppointmentList(appState: AppState, context: Context) {
     val scaffoldState = appState.scaffoldState
     val scope = appState.scope
 
-    var user by remember { mutableStateOf(FirebaseAuth.getInstance().currentUser) }
-
-    FirebaseAuth.AuthStateListener {
-        user = it.currentUser
-    }
+    val user = FirebaseAuth.getInstance().currentUser
+    val firestore = FirebaseFirestore.getInstance()
+    val homeFeed by remember { mutableStateOf(ArrayList<HomeFeedItem>()) }
 
     Scaffold (
         scaffoldState = scaffoldState,
@@ -129,11 +132,33 @@ fun AppointmentList(appState: AppState, context: Context) {
             }
         },
         content = {
+            if (user != null) {
+                    firestore
+                    .collection("appointments")
+                    .document(user.uid)
+                    .collection("home-feed")
+                        .addSnapshotListener { docSnapshot, e ->
+                            docSnapshot?.forEach {
+
+                                val homeFeedItem = HomeFeedItem(
+                                    title = it.get("title").toString(),
+                                    datetime = it.get("datetime").toString()
+                                )
+
+                                if (!homeFeed.contains(homeFeedItem)) {
+                                    homeFeed.add(homeFeedItem)
+                                }
+                                Log.d("TEST", it.get("title").toString())
+                            }
+                        }
+            } else {
+                Text(text = "Log in to add")
+            }
+
             Column {
-                AppItem(appText = "Complete Diet Form", appDate = "TODAY, 9:00 PM")
-                AppItem(appText = "Inflectra Treatment", appDate = "MAY 12, 10:00 PM")
-                AppItem(appText = "Take Methotrexate", appDate = "MAY 12, 9:00 PM")
-                AppItem(appText = "Refill Methotrexate", appDate = "AUGUST 12")
+                homeFeed.forEachIndexed  { index, item ->
+                    AppItem(appText = homeFeed.get(index).title, appDate = homeFeed.get(index).datetime)
+                }
             }
         }
     )
