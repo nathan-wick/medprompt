@@ -14,7 +14,7 @@ fun AppBar(
 ) {
     TopAppBar(
         title = {
-            Text(text = stringResource(id = R.string.app_name))
+            Text(text = "MedPrompt")
         },
         backgroundColor = MaterialTheme.colors.primary,
         contentColor = MaterialTheme.colors.onPrimary,
