@@ -14,11 +14,11 @@ fun SetupNavGraph(appState: AppState) {
     ) {
         composable(
             route = Screen.Home.route,
-            content = { HomeScreen(appState) }
+            content = { HomeScreen(appState = appState) }
         )
         composable(
             route = Screen.Medication.route,
-            content = { MedicationScreen(navController = appState.navController) }
+            content = { MedicationScreen(appState = appState) }
         )
         composable(
             route = Screen.Appointment.route,
