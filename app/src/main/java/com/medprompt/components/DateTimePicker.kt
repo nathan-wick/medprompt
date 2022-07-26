@@ -9,6 +9,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.medprompt.ui.theme.MedpromptTheme
+import java.util.*
 
 /**
  * This is custom Date and Time picker. Why create this?
@@ -31,7 +32,13 @@ fun DateTimePicker (label: String) {
 
             // These lists are static data for now... Firebase will come later
             val monthList = listOf("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
-            val yearList = listOf("2000", "2001", "2002")
+            val yearList = mutableListOf<String>()
+            val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+            var yearToAdd = currentYear
+            while (yearToAdd < (currentYear.toInt() + 10)) {
+                yearList.add(yearToAdd.toString())
+                yearToAdd = yearToAdd + 1
+            }
 
             InputField(weight = 3f, placeholder = "Day", keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
             DropDown(weight = 3f, items = monthList)
