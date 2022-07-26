@@ -35,7 +35,8 @@ fun DateTimePicker (label: String) {
             val yearList = mutableListOf<String>()
             val currentYear = Calendar.getInstance().get(Calendar.YEAR)
             var yearToAdd = currentYear
-            while (yearToAdd < (currentYear.toInt() + 10)) {
+            val availableYears = 10
+            while (yearToAdd < (currentYear.toInt() + availableYears)) {
                 yearList.add(yearToAdd.toString())
                 yearToAdd = yearToAdd + 1
             }
