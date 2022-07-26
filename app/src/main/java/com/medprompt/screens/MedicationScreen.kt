@@ -75,7 +75,21 @@ fun MedicationScreen(appState: AppState) {
                                 medName = medName
                             )
                         )
+
                     addMed.addOnSuccessListener(OnSuccessListener {
+
+                        firestore
+                            .collection("appointments")
+                            .document(user.uid)
+                            .collection("home-feed")
+                            .document()
+                            .set(
+                                HomeFeedItem(
+                                    title = medName,
+                                    datetime = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
+                                )
+                            )
+
                         appState.navController.navigate(Screen.Home.route)
                     })
                 }

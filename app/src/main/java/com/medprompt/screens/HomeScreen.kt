@@ -29,7 +29,6 @@ import com.medprompt.ui.theme.*
 import kotlinx.coroutines.launch
 
 data class HomeFeedItem(
-    val docId: String,
     val title: String,
     val datetime: String
 )
@@ -142,7 +141,6 @@ fun AppointmentList(appState: AppState, context: Context) {
                             docSnapshot?.forEach {
 
                                 val homeFeedItem = HomeFeedItem(
-                                    docId = it.id,
                                     title = it.get("title").toString(),
                                     datetime = it.get("datetime").toString()
                                 )
