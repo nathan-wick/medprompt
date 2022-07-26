@@ -23,7 +23,7 @@ import com.medprompt.ui.*
  * NOTE: This component has to be inside a Row
  */
 @Composable
-fun RowScope.InputField (weight: Float, keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text), placeholder: String = "", value: String= "", onValueChange: (String) -> Unit = {}) {
+fun RowScope.InputField (weight: Float, keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text), placeholder: String = "", value: String= "", onValueChange: (String) -> Unit = { /*TODO onClick*/ }) {
     Box(
         modifier = Modifier
             .height(55.dp)
