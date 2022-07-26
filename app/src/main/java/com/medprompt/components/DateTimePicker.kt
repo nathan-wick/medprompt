@@ -30,7 +30,7 @@ fun DateTimePicker (label: String) {
         Row(modifier = Modifier.padding(5.dp).height(60.dp)) {
 
             // These lists are static data for now... Firebase will come later
-            val monthList = listOf("Jan", "Feb")
+            val monthList = listOf("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
             val yearList = listOf("2000", "2001", "2002")
 
             InputField(weight = 3f, placeholder = "Day", keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
