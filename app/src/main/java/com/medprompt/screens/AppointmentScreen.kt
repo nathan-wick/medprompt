@@ -20,10 +20,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.medprompt.AppState
+import com.medprompt.Screen
 import com.medprompt.components.DateTimePicker
 import com.medprompt.components.DropDown
 import com.medprompt.components.HeaderOptions
@@ -62,7 +64,7 @@ fun AppointmentScreen(appState: AppState) {
                 contextLabel = "Appointment",
                 addButtonOnClick = {
                     if (user != null && appName.isNotEmpty()) {
-                        firestore
+                        val addApp = firestore
                             .collection("appointments")
                             .document(user.uid)
                             .collection("appointments")
@@ -75,6 +77,9 @@ fun AppointmentScreen(appState: AppState) {
                                     appName = appName
                                 )
                             )
+                        addApp.addOnSuccessListener(OnSuccessListener {
+                            appState.navController.navigate(Screen.Home.route)
+                        })
                     }
                 }
             )
