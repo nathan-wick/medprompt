@@ -77,7 +77,19 @@ fun AppointmentScreen(appState: AppState) {
                                     appName = appName
                                 )
                             )
+
                         addApp.addOnSuccessListener(OnSuccessListener {
+                            firestore
+                                .collection("appointments")
+                                .document(user.uid)
+                                .collection("home-feed")
+                                .document()
+                                .set(
+                                    HomeFeedItem(
+                                        title = appName,
+                                        datetime = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
+                                    )
+                                )
                             appState.navController.navigate(Screen.Home.route)
                         })
                     }
