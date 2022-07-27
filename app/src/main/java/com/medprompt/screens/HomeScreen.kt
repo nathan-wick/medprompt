@@ -3,6 +3,7 @@ package com.medprompt.screens
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -164,7 +165,7 @@ fun AppointmentList(appState: AppState, context: Context) {
 
             Column (modifier = Modifier.verticalScroll(rememberScrollState())) {
                 homeFeed.forEachIndexed  { index, item ->
-                    AppItem(appText = homeFeed.get(index).title, appDate = homeFeed.get(index).datetime)
+                    AppItem(appText = homeFeed.get(index).title, appDate = homeFeed.get(index).datetime, context = context)
                 }
             }
         }
@@ -172,7 +173,7 @@ fun AppointmentList(appState: AppState, context: Context) {
 }
 
 @Composable
-fun AppItem(appText : String, appDate: String) {
+fun AppItem(appText : String, appDate: String, context: Context) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -183,9 +184,23 @@ fun AppItem(appText : String, appDate: String) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(defaultPadding)
+                .clickable {
+                    Toast.makeText(context, "Hi", Toast.LENGTH_LONG).show()
+                }
         ) {
-            Text(text = appText, color = Color.Black, modifier = Modifier.padding(horizontal = 10.dp))
-            Text(text = appDate, color = Blue200, modifier = Modifier.padding(horizontal = 10.dp))
+            Text(text = appText, color = Color.Black)
+
+            Row (verticalAlignment = Alignment.CenterVertically) {
+                Text(text = appDate, color = Blue200)
+                Icon(
+                    Icons.Filled.ArrowForward,
+                    contentDescription = "Icon Forward",
+                    tint = Blue500,
+                    modifier = Modifier.size(15.dp)
+                )
+            }
         }
     }
 }
