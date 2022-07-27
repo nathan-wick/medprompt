@@ -34,6 +34,7 @@ fun SetupNavGraph(appState: AppState) {
             content = { AppointmentScreen(appState = appState) }
         )
         composable(
+            // we can pass arguments to our screens this way...
             route = Screen.EditAppointment.route + "/{documentId}",
             arguments = listOf(navArgument("documentId") { type = NavType.StringType })
         ) { navBackStackEntry ->
