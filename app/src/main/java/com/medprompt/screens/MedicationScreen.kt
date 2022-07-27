@@ -22,6 +22,7 @@ import com.medprompt.components.HeaderOptions
 import com.medprompt.components.InputField
 import com.medprompt.dto.HomeFeedItem
 import com.medprompt.dto.Medication
+import com.medprompt.dto.ScreenType
 import com.medprompt.ui.theme.MedpromptTheme
 import com.medprompt.ui.theme.defaultPadding
 import java.time.Instant
@@ -85,6 +86,7 @@ fun MedicationScreen(appState: AppState) {
                             .document(it.id)
                             .set(
                                 HomeFeedItem(
+                                    screenType = ScreenType.MEDICATION,
                                     title = medName,
                                     datetime = dateTime
                                 )

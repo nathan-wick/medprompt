@@ -34,6 +34,7 @@ import com.medprompt.components.*
 import com.medprompt.dto.Appointment
 import com.medprompt.dto.CustomDateTime
 import com.medprompt.dto.HomeFeedItem
+import com.medprompt.dto.ScreenType
 import com.medprompt.ui.theme.Blue200
 import com.medprompt.ui.theme.MedpromptTheme
 import kotlinx.coroutines.CoroutineScope
@@ -90,6 +91,7 @@ fun AppointmentScreen(appState: AppState) {
                                 .document(it.id)
                                 .set(
                                     HomeFeedItem(
+                                        screenType = ScreenType.APPOINTMENT,
                                         title = appName,
                                         datetime = dateTime
                                     )
