@@ -1,21 +1,15 @@
 package com.medprompt.screens
 
-import android.renderscript.ScriptGroup
 import android.widget.Toast
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
@@ -26,21 +20,12 @@ import com.medprompt.components.DateTimePicker
 import com.medprompt.components.DropDown
 import com.medprompt.components.HeaderOptions
 import com.medprompt.components.InputField
+import com.medprompt.dto.HomeFeedItem
+import com.medprompt.dto.Medication
 import com.medprompt.ui.theme.MedpromptTheme
 import com.medprompt.ui.theme.defaultPadding
 import java.time.Instant
 import java.time.format.DateTimeFormatter
-
-data class Medication(
-    val datetime: String,
-    val freqAmount: Number,
-    val freqType: String,
-    val doseSize: Number,
-    val dozeSizeUnit: String,
-    val stockSize: Number,
-    val stockSizeUnit: String,
-    val medName: String
-)
 
 @Composable
 fun MedicationScreen(appState: AppState) {
