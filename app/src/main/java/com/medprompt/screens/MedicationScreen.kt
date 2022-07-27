@@ -25,17 +25,33 @@ import com.medprompt.dto.Medication
 import com.medprompt.ui.theme.MedpromptTheme
 import com.medprompt.ui.theme.defaultPadding
 import java.time.Instant
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 @Composable
 fun MedicationScreen(appState: AppState) {
     val context = LocalContext.current
     val user = FirebaseAuth.getInstance().currentUser
     val firestore = FirebaseFirestore.getInstance()
+
+    val stockSizeList = listOf("MG", "ML")
+    val freqList = listOf("Week", "Month", "Year")
+
     var medName by remember { mutableStateOf("") }
     var freqAmount by remember { mutableStateOf(1) }
     var doseSize by remember { mutableStateOf(0) }
     var stockSize by remember { mutableStateOf(0) }
+
+    var selectedFreqType by remember { mutableStateOf(freqList[0]) }
+    var selectedDoseSize by remember { mutableStateOf(stockSizeList[0]) }
+    var selectedStockSize by remember { mutableStateOf(stockSizeList[0]) }
+
+    val current = LocalDateTime.now()
+    val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
+    val formatted = current.format(formatter)
+
+    var dateTime by remember { mutableStateOf(formatted) }
 
     Column (modifier = Modifier.fillMaxSize()) {
         HeaderOptions(
@@ -50,13 +66,13 @@ fun MedicationScreen(appState: AppState) {
                         .document()
                         .set(
                             Medication(
-                                datetime = DateTimeFormatter.ISO_INSTANT.format(Instant.now()),
+                                datetime = dateTime,
                                 freqAmount = freqAmount,
-                                freqType = "Week",
+                                freqType = selectedFreqType,
                                 doseSize = doseSize,
-                                dozeSizeUnit = "MG",
+                                dozeSizeUnit = selectedDoseSize,
                                 stockSize = stockSize,
-                                stockSizeUnit = "MG",
+                                stockSizeUnit = selectedStockSize,
                                 medName = medName
                             )
                         )
@@ -71,7 +87,7 @@ fun MedicationScreen(appState: AppState) {
                             .set(
                                 HomeFeedItem(
                                     title = medName,
-                                    datetime = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
+                                    datetime = dateTime
                                 )
                             )
 
@@ -92,13 +108,12 @@ fun MedicationScreen(appState: AppState) {
             )
         }
 
-        DateTimePicker(label = "Date and Time to take Medication")
+        DateTimePicker(label = "Date and Time to take Medication", onSelectedValue = { dateTime = it.toString() })
 
         Text(text = "Frequency to take Medication")
         Row(modifier = Modifier
             .padding(defaultPadding)
             .height(50.dp)) {
-            val freqList = listOf("Week", "Month", "Year")
 
             InputField(
                 placeholder = "Times every...",
@@ -106,15 +121,19 @@ fun MedicationScreen(appState: AppState) {
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 value = freqAmount.toString(),
                 onValueChange = {
-                    if (it.isBlank() || (it.toInt() >= 20)) {
-                        freqAmount = 1;
-                        Toast.makeText(context, "Must be at least 1 but below 21", Toast.LENGTH_LONG).show()
+                    if (it.isNullOrBlank() || it.isNullOrEmpty() || it.toInt() > 100) {
+                        freqAmount = 1
+                        Toast.makeText(context, "Must be between 0 and 100", Toast.LENGTH_LONG).show()
                     } else {
                         freqAmount = it.toInt()
                     }
                 }
             )
-            DropDown(weight = 3f, items = freqList)
+            DropDown(
+                weight = 3f,
+                items = freqList,
+                onSelectedValue = { selectedFreqType = it }
+            )
         }
 
         Text(text = "Dose Size (Optional)")
@@ -128,40 +147,46 @@ fun MedicationScreen(appState: AppState) {
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 value = doseSize.toString(),
                 onValueChange = {
-                    if (it.isBlank()) {
-                        doseSize = 0;
+                    if (it.isNullOrBlank() || it.isNullOrEmpty()) {
+                        doseSize = 0
                     } else {
                         doseSize = it.toInt()
                     }
                 }
             )
-            DropDown(weight = 3f, items = unitList)
+            DropDown(
+                weight = 3f,
+                items = stockSizeList,
+                onSelectedValue = { selectedDoseSize = it }
+            )
         }
 
         Text(text = "Stock Size (Optional)")
         Row(modifier = Modifier
             .padding(defaultPadding)
             .height(50.dp)) {
-            val stockSizeList = listOf("MG", "ML")
 
             InputField(
                 weight = 3f,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 value = stockSize.toString(),
                 onValueChange = {
-                    if (it.isBlank()) {
-                        stockSize = 0;
+                    if (it.isNullOrBlank() || it.isNullOrEmpty()) {
+                        stockSize = 0
                     } else {
                         stockSize = it.toInt()
                     }
                 }
             )
-            DropDown(weight = 3f, items = stockSizeList)
+            DropDown(
+                weight = 3f,
+                items = stockSizeList,
+                onSelectedValue = { selectedStockSize = it }
+            )
         }
 
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
