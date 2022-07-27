@@ -6,7 +6,6 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,7 +21,6 @@ import com.medprompt.ui.theme.MedpromptTheme
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import java.text.SimpleDateFormat
 import java.util.*
@@ -31,10 +29,8 @@ class MainActivity : ComponentActivity() {
     private lateinit var appState: AppState
     private lateinit var auth: FirebaseAuth
     private lateinit var authStateListener : FirebaseAuth.AuthStateListener
+    private companion object { private const val CHANNEL_ID = "channel01" }
 
-    private companion object {
-        private const val CHANNEL_ID = "channel01"
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -87,7 +83,7 @@ class MainActivity : ComponentActivity() {
         val mainPendingIntent= PendingIntent.getActivity(this, 1,mainIntent, PendingIntent.FLAG_IMMUTABLE)
 
 
-        val notificationBuilder=NotificationCompat.Builder(this,"$CHANNEL_ID")
+        val notificationBuilder=NotificationCompat.Builder(this, CHANNEL_ID)
         notificationBuilder.setSmallIcon(R.drawable.ic_notification)
         notificationBuilder.setContentTitle("Notification Title")
         notificationBuilder.setContentText("This is the multi line description")
@@ -102,15 +98,12 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun createNotificationChannel(){
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
-            val name: CharSequence="MyNotification"
-            val description="My Notification channel description"
-            val importance= NotificationManager.IMPORTANCE_DEFAULT
-            val notificationChannel=NotificationChannel(CHANNEL_ID, name, importance)
-            notificationChannel.description=description
-            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(notificationChannel)
-
-        }
+        val name: CharSequence="MyNotification"
+        val description="My Notification channel description"
+        val importance= NotificationManager.IMPORTANCE_DEFAULT
+        val notificationChannel=NotificationChannel(CHANNEL_ID, name, importance)
+        notificationChannel.description=description
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(notificationChannel)
     }
 }
