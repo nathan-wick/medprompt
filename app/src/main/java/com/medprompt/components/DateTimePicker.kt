@@ -35,15 +35,8 @@ fun DateTimePicker (label: String, onSelectedValue: (CustomDateTime) -> Unit = {
     val timeList = listOf("1:00", "1:30", "2:00", "2:30", "3:00", "3:30", "4:00", "4:30", "5:00", "5:30", "6:00", "6:30", "7:00", "7:30", "8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30")
     val pmAmList = listOf("PM", "AM")
 
-    val yearList = mutableListOf<String>()
-
+    val yearList = initYearList()
     val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-    var yearToAdd = currentYear
-    val availableYears = 10
-    while (yearToAdd < (currentYear + availableYears)) {
-        yearList.add(yearToAdd.toString())
-        yearToAdd = yearToAdd + 1
-    }
 
     var day by remember { mutableStateOf(1) }
     var month by remember { mutableStateOf(monthList[0]) }
@@ -51,7 +44,7 @@ fun DateTimePicker (label: String, onSelectedValue: (CustomDateTime) -> Unit = {
     var hour by remember { mutableStateOf(timeList[0]) }
     var amPm by remember { mutableStateOf(pmAmList[0]) }
 
-    var dateTime by remember {
+    val dateTime by remember {
         mutableStateOf(CustomDateTime(
             year = year,
             month = month,
@@ -67,6 +60,7 @@ fun DateTimePicker (label: String, onSelectedValue: (CustomDateTime) -> Unit = {
             .padding(defaultPadding)
             .height(55.dp)) {
 
+            // day, probably should have been a dropdown
             InputField(
                 weight = 1f, placeholder = "Day",
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -82,6 +76,8 @@ fun DateTimePicker (label: String, onSelectedValue: (CustomDateTime) -> Unit = {
                     onSelectedValue.invoke(dateTime)
                 }
             )
+
+            // month picker
             DropDown(
                 weight = 1f,
                 items = monthList,
@@ -92,6 +88,8 @@ fun DateTimePicker (label: String, onSelectedValue: (CustomDateTime) -> Unit = {
                     onSelectedValue.invoke(dateTime)
                 }
             )
+
+            // year picker
             DropDown(
                 weight = 1f,
                 items = yearList,
@@ -108,6 +106,7 @@ fun DateTimePicker (label: String, onSelectedValue: (CustomDateTime) -> Unit = {
             .padding(5.dp)
             .height(50.dp)) {
 
+            // Hour picker
             DropDown(
                 weight = 1f,
                 items = timeList,
@@ -118,6 +117,8 @@ fun DateTimePicker (label: String, onSelectedValue: (CustomDateTime) -> Unit = {
                     onSelectedValue.invoke(dateTime)
                 }
             )
+
+            // AM or PM picker
             DropDown(
                 weight = 1f,
                 items = pmAmList,
@@ -130,6 +131,21 @@ fun DateTimePicker (label: String, onSelectedValue: (CustomDateTime) -> Unit = {
             )
         }
     }
+}
+
+fun initYearList() : MutableList<String> {
+    val yearList = mutableListOf<String>()
+
+    val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+    var yearToAdd = currentYear
+    val availableYears = 10
+
+    while (yearToAdd < (currentYear + availableYears)) {
+        yearList.add(yearToAdd.toString())
+        yearToAdd += 1
+    }
+
+    return yearList
 }
 
 @Preview(showBackground = true)
