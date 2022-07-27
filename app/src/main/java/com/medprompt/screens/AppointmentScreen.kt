@@ -1,6 +1,7 @@
 package com.medprompt.screens
 
 import android.util.Log
+import android.widget.DatePicker
 import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.Button
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
@@ -27,10 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.medprompt.AppState
 import com.medprompt.Screen
-import com.medprompt.components.DateTimePicker
-import com.medprompt.components.DropDown
-import com.medprompt.components.HeaderOptions
-import com.medprompt.components.InputField
+import com.medprompt.components.*
 import com.medprompt.dto.Appointment
 import com.medprompt.dto.CustomDateTime
 import com.medprompt.dto.HomeFeedItem
@@ -52,7 +51,11 @@ fun AppointmentScreen(appState: AppState) {
     var appName by remember { mutableStateOf("") }
     var freqAmount by remember { mutableStateOf(0) }
 
-    var dateTime by remember { mutableStateOf(currentDateTime()) }
+    val current = LocalDateTime.now()
+    val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
+    val formatted = current.format(formatter)
+
+    var dateTime by remember { mutableStateOf(formatted) }
 
     val freqList = listOf("Week", "Month", "Year")
     var selectedFreqType by remember { mutableStateOf(freqList[0]) }
@@ -88,7 +91,7 @@ fun AppointmentScreen(appState: AppState) {
                                 .set(
                                     HomeFeedItem(
                                         title = appName,
-                                        datetime = DateTimeFormatter.ISO_INSTANT.format(Instant.now())
+                                        datetime = dateTime
                                     )
                                 )
                             appState.navController.navigate(Screen.Home.route)
@@ -118,9 +121,9 @@ fun AppointmentScreen(appState: AppState) {
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     value = freqAmount.toString(),
                     onValueChange = {
-                        if (it.isNullOrBlank() || it.isNullOrEmpty()) {
-                            freqAmount = 0
-                            Toast.makeText(context, "Must be between 0 and 21", Toast.LENGTH_LONG).show()
+                        if (it.isNullOrBlank() || it.isNullOrEmpty() || it.toInt() > 100) {
+                            freqAmount = 1
+                            Toast.makeText(context, "Must be between 0 and 100", Toast.LENGTH_LONG).show()
                         } else {
                             freqAmount = it.toInt()
                         }
@@ -130,12 +133,6 @@ fun AppointmentScreen(appState: AppState) {
             }
         }
     }
-}
-
-fun currentDateTime() : String {
-    val current = LocalDateTime.now()
-    val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
-    return current.format(formatter)
 }
 
 @Preview(showBackground = true)
