@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.medprompt.screens.*
 import com.medprompt.screens.edit.EditAppointmentScreen
+import com.medprompt.screens.edit.EditMedicationScreen
 
 @Composable
 fun SetupNavGraph(appState: AppState) {
@@ -22,6 +23,12 @@ fun SetupNavGraph(appState: AppState) {
             route = Screen.Medication.route,
             content = { MedicationScreen(appState = appState) }
         )
+        composable(
+            route = Screen.EditMedication.route + "/{documentId}",
+            arguments = listOf(navArgument("documentId") { type = NavType.StringType })
+        ) { navBackStackEntry ->
+            EditMedicationScreen(appState = appState, documentId = navBackStackEntry.arguments?.getString("documentId"))
+        }
         composable(
             route = Screen.Appointment.route,
             content = { AppointmentScreen(appState = appState) }
