@@ -145,6 +145,7 @@ fun AppointmentList(appState: AppState, context: Context) {
                             docSnapshot?.forEach {
                                 // TODO: Make date human readable
                                 val homeFeedItem = HomeFeedItem(
+                                    documentId = it.get("documentId").toString(),
                                     screenType = getEnum<ScreenType>(it.get("screenType").toString()),
                                     title = it.get("title").toString(),
                                     datetime = it.get("datetime").toString()
@@ -191,10 +192,10 @@ fun AppItem(navController: NavController, item: HomeFeedItem) {
                 .padding(defaultPadding)
                 .clickable {
                     if (item.screenType == ScreenType.APPOINTMENT) {
-                        navController.navigate("${Screen.EditAppointment.route}/APPdoc321231231231")
+                        navController.navigate("${Screen.EditAppointment.route}/${item.documentId}")
                     }
                     if (item.screenType == ScreenType.MEDICATION) {
-                        navController.navigate("${Screen.EditMedication.route}/MEDdoc321231231231")
+                        navController.navigate("${Screen.EditMedication.route}/${item.documentId}")
                     }
                 }
         ) {
