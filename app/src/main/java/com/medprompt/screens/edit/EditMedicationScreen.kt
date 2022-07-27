@@ -20,7 +20,7 @@ fun EditMedicationScreen(appState: AppState, documentId: String?) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Edit Apps here")
+        Text(text = "Edit Meds here")
         Text(text = "$documentId")
     }
 }
