@@ -1,6 +1,5 @@
 package com.medprompt.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,11 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.PopupProperties
 import com.medprompt.ui.theme.Blue200
 import com.medprompt.ui.theme.MedpromptTheme
-import com.medprompt.ui.theme.defaultPadding
-import kotlinx.coroutines.NonDisposableHandle.parent
 
 /**
  * Custom Component for our DropDowns, which are used often.
@@ -45,7 +41,7 @@ fun RowScope.DropDown (weight: Float, items: List<String>, selectedValue: String
                 textAlign = TextAlign.Center,
             )
 
-            Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = "")
+            Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = "Open Dropdown Icon")
             DropdownMenu(
                 expanded = isOpen,
                 onDismissRequest = { isOpen = false },
