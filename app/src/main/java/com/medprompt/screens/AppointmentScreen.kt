@@ -1,5 +1,6 @@
 package com.medprompt.screens
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -30,19 +31,18 @@ import com.medprompt.components.DateTimePicker
 import com.medprompt.components.DropDown
 import com.medprompt.components.HeaderOptions
 import com.medprompt.components.InputField
+import com.medprompt.dto.Appointment
+import com.medprompt.dto.CustomDateTime
+import com.medprompt.dto.HomeFeedItem
 import com.medprompt.ui.theme.Blue200
 import com.medprompt.ui.theme.MedpromptTheme
 import kotlinx.coroutines.CoroutineScope
+import org.koin.androidx.viewmodel.scope.emptyState
 import java.sql.Timestamp
 import java.time.Instant
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-
-data class Appointment (
-    val datetime: String,
-    val freqAmount: Number,
-    val freqType: String,
-    val appName: String
-)
+import java.time.format.FormatStyle
 
 @Composable
 fun AppointmentScreen(appState: AppState) {
@@ -50,12 +50,12 @@ fun AppointmentScreen(appState: AppState) {
     val user = FirebaseAuth.getInstance().currentUser
     val firestore = FirebaseFirestore.getInstance()
     var appName by remember { mutableStateOf("") }
-    var freqAmount by remember { mutableStateOf(1) }
+    var freqAmount by remember { mutableStateOf(0) }
 
-    var isOpen by remember { mutableStateOf(false) }
+    var dateTime by remember { mutableStateOf(currentDateTime()) }
+
     val freqList = listOf("Week", "Month", "Year")
-    var freqTypeSelectedIndex by remember { mutableStateOf(0) }
-    var freqType by remember { mutableStateOf(freqList[freqTypeSelectedIndex]) }
+    var selectedFreqType by remember { mutableStateOf(freqList[0]) }
 
     MedpromptTheme {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -64,6 +64,7 @@ fun AppointmentScreen(appState: AppState) {
                 contextLabel = "Appointment",
                 addButtonOnClick = {
                     if (user != null && appName.isNotEmpty()) {
+                        Log.d("DATETIME: ", dateTime)
                         val addApp = firestore
                             .collection("appointments")
                             .document(user.uid)
@@ -71,9 +72,9 @@ fun AppointmentScreen(appState: AppState) {
                             .document()
                             .set(
                                 Appointment(
-                                    datetime = DateTimeFormatter.ISO_INSTANT.format(Instant.now()),
+                                    datetime = dateTime,
                                     freqAmount = freqAmount,
-                                    freqType = freqType,
+                                    freqType = selectedFreqType,
                                     appName = appName
                                 )
                             )
@@ -104,7 +105,7 @@ fun AppointmentScreen(appState: AppState) {
                 InputField(weight = 1f, value = appName, onValueChange = { appName = it })
             }
 
-            DateTimePicker(label = "Date and Time of Appointment")
+            DateTimePicker(label = "Date and Time of Appointment", onSelectedValue = { dateTime = it.toString() })
 
             Text(text = "Frequency of the Appointment")
             Row(modifier = Modifier
@@ -117,52 +118,24 @@ fun AppointmentScreen(appState: AppState) {
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     value = freqAmount.toString(),
                     onValueChange = {
-                        if (it.isBlank()) {
-                            freqAmount = 1;
-                        }
-                        else if (freqAmount > 0 && freqAmount <= 20) {
-                            freqAmount = it.toInt()
+                        if (it.isNullOrBlank() || it.isNullOrEmpty()) {
+                            freqAmount = 0
+                            Toast.makeText(context, "Must be between 0 and 21", Toast.LENGTH_LONG).show()
                         } else {
-                            Toast.makeText(context, "Frequency of App. must be below or equal 20", Toast.LENGTH_LONG).show()
+                            freqAmount = it.toInt()
                         }
-
                     }
                 )
-
-                Box(
-                    modifier = Modifier
-                        .height(55.dp)
-                        .weight(weight = 3f)
-                        .border(width = 4.dp, color = Blue200, shape = CircleShape)
-                        .clickable { isOpen = !isOpen },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Row {
-                        Text(
-                            text = freqList[freqTypeSelectedIndex],
-                            textAlign = TextAlign.Center
-                        )
-
-                        Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = "")
-                        DropdownMenu(
-                            expanded = isOpen,
-                            onDismissRequest = { isOpen = false }
-                        ) {
-                            freqList.forEachIndexed { index, itemText ->
-                                DropdownMenuItem(onClick = {
-                                    freqTypeSelectedIndex = index
-                                    freqType = freqList[freqTypeSelectedIndex]
-                                    isOpen = false
-                                }) {
-                                    Text(text = itemText, textAlign = TextAlign.Center)
-                                }
-                            }
-                        }
-                    }
-                }
+                DropDown(weight = 3f, items = freqList, onSelectedValue = { selectedFreqType = it })
             }
         }
     }
+}
+
+fun currentDateTime() : String {
+    val current = LocalDateTime.now()
+    val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
+    return current.format(formatter)
 }
 
 @Preview(showBackground = true)
