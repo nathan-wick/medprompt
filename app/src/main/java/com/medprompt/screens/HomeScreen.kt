@@ -2,11 +2,8 @@ package com.medprompt.screens
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
@@ -23,7 +20,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.medprompt.*
@@ -34,7 +30,6 @@ import com.medprompt.dto.ScreenType
 import com.medprompt.dto.getEnum
 import com.medprompt.ui.theme.*
 import kotlinx.coroutines.launch
-import java.util.*
 import kotlin.collections.ArrayList
 
 @Composable
@@ -238,11 +233,6 @@ fun AddButton (navController: NavController) {
                         navController.navigate(route = Screen.Appointment.route)
                     })
                 }
-//                Row(modifier = Modifier.padding(defaultPadding), ) {
-//                    Button(text = "Form", onClick = {
-//                        navController.navigate(route = Screen.Form.route)
-//                    })
-//                }
             }
         }
 

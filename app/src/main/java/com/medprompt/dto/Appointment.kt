@@ -9,4 +9,6 @@ data class Appointment (
     val freqAmount: Number,
     val freqType: String,
     val appName: String
-)
+) {
+    fun Appointment() {}
+}
