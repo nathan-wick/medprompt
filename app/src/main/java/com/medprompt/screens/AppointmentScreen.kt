@@ -91,6 +91,7 @@ fun AppointmentScreen(appState: AppState) {
                                 .document(it.id)
                                 .set(
                                     HomeFeedItem(
+                                        documentId = it.id,
                                         screenType = ScreenType.APPOINTMENT,
                                         title = appName,
                                         datetime = dateTime

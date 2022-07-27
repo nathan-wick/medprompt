@@ -86,6 +86,7 @@ fun MedicationScreen(appState: AppState) {
                             .document(it.id)
                             .set(
                                 HomeFeedItem(
+                                    documentId = it.id,
                                     screenType = ScreenType.MEDICATION,
                                     title = medName,
                                     datetime = dateTime
