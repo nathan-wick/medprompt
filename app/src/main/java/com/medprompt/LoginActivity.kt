@@ -23,6 +23,7 @@ class LoginActivity : ComponentActivity() {
                         AuthUI.IdpConfig.EmailBuilder().build(),
                         AuthUI.IdpConfig.GoogleBuilder().build()
                     )
+                    // Start FirebaseAuthUI
                     startSignIn(providers)
                 }
             }
