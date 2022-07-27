@@ -6,6 +6,8 @@ import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -20,18 +22,17 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.medprompt.*
 import com.medprompt.components.Button
 import com.medprompt.components.DrawerHeader
+import com.medprompt.dto.HomeFeedItem
 import com.medprompt.ui.theme.*
 import kotlinx.coroutines.launch
-
-data class HomeFeedItem(
-    val title: String,
-    val datetime: String
-)
+import java.util.*
+import kotlin.collections.ArrayList
 
 @Composable
 fun HomeScreen(appState: AppState) {
@@ -139,7 +140,7 @@ fun AppointmentList(appState: AppState, context: Context) {
                     .collection("home-feed")
                         .addSnapshotListener { docSnapshot, e ->
                             docSnapshot?.forEach {
-
+                                // TODO: Make date human readable
                                 val homeFeedItem = HomeFeedItem(
                                     title = it.get("title").toString(),
                                     datetime = it.get("datetime").toString()
@@ -148,14 +149,20 @@ fun AppointmentList(appState: AppState, context: Context) {
                                 if (!homeFeed.contains(homeFeedItem)) {
                                     homeFeed.add(homeFeedItem)
                                 }
-                                Log.d("TEST", it.get("title").toString())
                             }
                         }
             } else {
                 Text(text = "Log in to add")
             }
 
-            Column {
+            //TODO: Why does this not give is the list? Would be nice if the user had a lot of data to load...
+            //LazyColumn {
+            //    items(homeFeed) { homeFeedItem ->
+            //        AppItem(appText = homeFeedItem.title, appDate = homeFeedItem.datetime)
+            //    }
+            //}
+
+            Column (modifier = Modifier.verticalScroll(rememberScrollState())) {
                 homeFeed.forEachIndexed  { index, item ->
                     AppItem(appText = homeFeed.get(index).title, appDate = homeFeed.get(index).datetime)
                 }
@@ -207,11 +214,11 @@ fun AddButton (navController: NavController) {
                         navController.navigate(route = Screen.Appointment.route)
                     })
                 }
-                Row(modifier = Modifier.padding(defaultPadding), ) {
-                    Button(text = "Form", onClick = {
-                        navController.navigate(route = Screen.Form.route)
-                    })
-                }
+//                Row(modifier = Modifier.padding(defaultPadding), ) {
+//                    Button(text = "Form", onClick = {
+//                        navController.navigate(route = Screen.Form.route)
+//                    })
+//                }
             }
         }
 

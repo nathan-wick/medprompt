@@ -20,16 +20,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import com.medprompt.ui.theme.Blue200
 import com.medprompt.ui.theme.MedpromptTheme
+import com.medprompt.ui.theme.defaultPadding
 import kotlinx.coroutines.NonDisposableHandle.parent
 
 /**
  * Custom Component for our DropDowns, which are used often.
  */
 @Composable
-fun RowScope.DropDown (weight: Float, items: List<String>) {
-    var selectedIndex by remember { mutableStateOf(0) }
+fun RowScope.DropDown (weight: Float, items: List<String>, onSelectedValue: (String) -> Unit = {}) {
+    var selectedItem by remember { mutableStateOf(items[0]) }
     var isOpen by remember { mutableStateOf(false) }
-
 
     Box(
         modifier = Modifier
@@ -41,24 +41,27 @@ fun RowScope.DropDown (weight: Float, items: List<String>) {
     ) {
         Row {
             Text(
-                text = items[selectedIndex],
-                textAlign = TextAlign.Center
+                text = selectedItem,
+                textAlign = TextAlign.Center,
             )
 
             Icon(imageVector = Icons.Filled.ArrowDropDown, contentDescription = "")
             DropdownMenu(
                 expanded = isOpen,
-                onDismissRequest = { isOpen = false }
-            ) {
-                items.forEachIndexed { index, itemText ->
-                    DropdownMenuItem(onClick = {
-                        selectedIndex = index
-                        isOpen = false
-                    }) {
-                        Text(text = itemText, textAlign = TextAlign.Center)
+                onDismissRequest = { isOpen = false },
+                content = {
+                    items.forEach { item ->
+                        DropdownMenuItem(
+                            content = { Text(text = item, textAlign = TextAlign.Center) },
+                            onClick = {
+                                selectedItem = item
+                                isOpen = false
+                                onSelectedValue.invoke(item)
+                            }
+                        )
                     }
                 }
-            }
+            )
         }
     }
 }
@@ -66,12 +69,11 @@ fun RowScope.DropDown (weight: Float, items: List<String>) {
 @Preview(showBackground = true)
 @Composable
 fun DropDown_Preview() {
+    var test by remember { mutableStateOf("test") }
     MedpromptTheme {
         Row() {
-            DropDown(weight = 3f, items = listOf("Item 1", "Item 2", "etc"))
-            DropDown(weight = 3f, items = listOf("Item 1", "Item 2", "etc"))
-            DropDown(weight = 3f, items = listOf("Item 1", "Item 2", "etc"))
-            DropDown(weight = 3f, items = listOf("Item 1", "Item 2", "etc"))
+            DropDown(weight = 3f, items = listOf("Item 1", "Item 2", "etc"), onSelectedValue = {  test = it })
+            DropDown(weight = 3f, items = listOf("Item 1", "Item 2", "etc"), onSelectedValue = {  test = it })
         }
     }
 }
