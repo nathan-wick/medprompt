@@ -17,21 +17,29 @@ import com.medprompt.ui.theme.buttonHeight
 import com.medprompt.ui.theme.defaultPadding
 
 @Composable
-fun HeaderOptions (navController: NavController, contextLabel: String, addButtonOnClick: () -> Unit = { /*TODO onClick*/ }) {
-    Row(modifier = Modifier.height(buttonHeight).padding(defaultPadding)) {
+fun HeaderOptions (navController: NavController, contextLabel: String, addButtonOnClick: () -> Unit = { /*TODO onClick*/ }, showDeleteButton: Boolean = false, deleteButtonOnCick: () -> Unit = { /*TODO onClick*/ }) {
+    Row(modifier = Modifier
+        .height(buttonHeight)
+        .padding(defaultPadding)) {
         Button(
             weight = 1f,
             text = "Cancel",
             onClick = {
             navController.navigate(route = Screen.Home.route)
         })
-
-        // TODO: make this say "Update ..." if the user is updating the form
         Button(
             weight = 2f,
-            text = "Add $contextLabel",
+            text = contextLabel,
             onClick = addButtonOnClick
         )
+
+        if (showDeleteButton) {
+            Button(
+                weight = 1f,
+                text = "Delete",
+                onClick = deleteButtonOnCick
+            )
+        }
     }
 }
 
@@ -39,6 +47,6 @@ fun HeaderOptions (navController: NavController, contextLabel: String, addButton
 @Composable
 fun HeaderOptions_Preview() {
     MedpromptTheme {
-        HeaderOptions(navController = rememberNavController(), contextLabel = "Context Label")
+        HeaderOptions(navController = rememberNavController(), contextLabel = "Context Label", showDeleteButton = true)
     }
 }

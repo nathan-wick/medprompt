@@ -85,6 +85,7 @@ fun DateTimePicker (label: String, onSelectedValue: (CustomDateTime) -> Unit = {
             DropDown(
                 weight = 1f,
                 items = monthList,
+                selectedValue = month,
                 onSelectedValue = {
                     month = it
                     dateTime.month = month
@@ -94,6 +95,7 @@ fun DateTimePicker (label: String, onSelectedValue: (CustomDateTime) -> Unit = {
             DropDown(
                 weight = 1f,
                 items = yearList,
+                selectedValue = year,
                 onSelectedValue = {
                     year = it
                     dateTime.year = year
@@ -109,6 +111,7 @@ fun DateTimePicker (label: String, onSelectedValue: (CustomDateTime) -> Unit = {
             DropDown(
                 weight = 1f,
                 items = timeList,
+                selectedValue = hour,
                 onSelectedValue = {
                     hour = it
                     dateTime.hour = hour
@@ -118,6 +121,7 @@ fun DateTimePicker (label: String, onSelectedValue: (CustomDateTime) -> Unit = {
             DropDown(
                 weight = 1f,
                 items = pmAmList,
+                selectedValue = amPm,
                 onSelectedValue = {
                     amPm = it
                     dateTime.pmOrAm = amPm

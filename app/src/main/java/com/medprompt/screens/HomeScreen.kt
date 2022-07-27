@@ -2,10 +2,8 @@ package com.medprompt.screens
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
@@ -22,16 +20,16 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.medprompt.*
 import com.medprompt.components.Button
 import com.medprompt.components.DrawerHeader
 import com.medprompt.dto.HomeFeedItem
+import com.medprompt.dto.ScreenType
+import com.medprompt.dto.getEnum
 import com.medprompt.ui.theme.*
 import kotlinx.coroutines.launch
-import java.util.*
 import kotlin.collections.ArrayList
 
 @Composable
@@ -98,7 +96,7 @@ fun AppointmentList(appState: AppState, context: Context) {
                         text = "Sign Out",
                         modifier = Modifier
                             .height(100.dp)
-                            .wrapContentHeight()
+                            .wrapContentHeight( )
                     )
                 }
             }
@@ -142,6 +140,8 @@ fun AppointmentList(appState: AppState, context: Context) {
                             docSnapshot?.forEach {
                                 // TODO: Make date human readable
                                 val homeFeedItem = HomeFeedItem(
+                                    documentId = it.get("documentId").toString(),
+                                    screenType = getEnum<ScreenType>(it.get("screenType").toString()),
                                     title = it.get("title").toString(),
                                     datetime = it.get("datetime").toString()
                                 )
@@ -164,7 +164,7 @@ fun AppointmentList(appState: AppState, context: Context) {
 
             Column (modifier = Modifier.verticalScroll(rememberScrollState())) {
                 homeFeed.forEachIndexed  { index, item ->
-                    AppItem(appText = homeFeed.get(index).title, appDate = homeFeed.get(index).datetime)
+                    AppItem(navController = appState.navController, item = item)
                 }
             }
         }
@@ -172,7 +172,7 @@ fun AppointmentList(appState: AppState, context: Context) {
 }
 
 @Composable
-fun AppItem(appText : String, appDate: String) {
+fun AppItem(navController: NavController, item: HomeFeedItem) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -183,9 +183,28 @@ fun AppItem(appText : String, appDate: String) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(defaultPadding)
+                .clickable {
+                    if (item.screenType == ScreenType.APPOINTMENT) {
+                        navController.navigate("${Screen.EditAppointment.route}/${item.documentId}")
+                    }
+                    if (item.screenType == ScreenType.MEDICATION) {
+                        navController.navigate("${Screen.EditMedication.route}/${item.documentId}")
+                    }
+                }
         ) {
-            Text(text = appText, color = Color.Black, modifier = Modifier.padding(horizontal = 10.dp))
-            Text(text = appDate, color = Blue200, modifier = Modifier.padding(horizontal = 10.dp))
+            Text(text = item.title, color = Color.Black)
+
+            Row (verticalAlignment = Alignment.CenterVertically) {
+                Text(text = item.datetime, color = Blue200)
+                Icon(
+                    Icons.Filled.ArrowForward,
+                    contentDescription = "Icon Forward",
+                    tint = Blue500,
+                    modifier = Modifier.size(15.dp)
+                )
+            }
         }
     }
 }
@@ -214,11 +233,6 @@ fun AddButton (navController: NavController) {
                         navController.navigate(route = Screen.Appointment.route)
                     })
                 }
-//                Row(modifier = Modifier.padding(defaultPadding), ) {
-//                    Button(text = "Form", onClick = {
-//                        navController.navigate(route = Screen.Form.route)
-//                    })
-//                }
             }
         }
 

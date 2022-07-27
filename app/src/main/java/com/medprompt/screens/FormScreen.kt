@@ -30,7 +30,7 @@ fun FormScreen(navController: NavController) {
             InputField(weight = 1f)
         }
 
-        DateTimePicker(label = "Date and Time to complete Form ")
+//        DateTimePicker(label = "Date and Time to complete Form ")
 
         Text(text = "Frequency to complete Form")
         Row(modifier = Modifier
@@ -39,7 +39,7 @@ fun FormScreen(navController: NavController) {
             val freqList = listOf("Week", "Month", "Year")
 
             InputField(weight = 3f, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
-            DropDown(weight = 3f, items = freqList)
+//            DropDown(weight = 3f, items = freqList)
         }
 
         // TODO: Make this a list of dynamic questions

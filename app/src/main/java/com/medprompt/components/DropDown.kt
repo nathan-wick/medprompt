@@ -27,8 +27,8 @@ import kotlinx.coroutines.NonDisposableHandle.parent
  * Custom Component for our DropDowns, which are used often.
  */
 @Composable
-fun RowScope.DropDown (weight: Float, items: List<String>, onSelectedValue: (String) -> Unit = {}) {
-    var selectedItem by remember { mutableStateOf(items[0]) }
+fun RowScope.DropDown (weight: Float, items: List<String>, selectedValue: String, onSelectedValue: (String) -> Unit = {}) {
+    var selectedItem by remember { mutableStateOf(items[ items.indexOf(selectedValue) ]) }
     var isOpen by remember { mutableStateOf(false) }
 
     Box(
@@ -72,8 +72,8 @@ fun DropDown_Preview() {
     var test by remember { mutableStateOf("test") }
     MedpromptTheme {
         Row() {
-            DropDown(weight = 3f, items = listOf("Item 1", "Item 2", "etc"), onSelectedValue = {  test = it })
-            DropDown(weight = 3f, items = listOf("Item 1", "Item 2", "etc"), onSelectedValue = {  test = it })
+            DropDown(weight = 3f, items = listOf("Item 1", "Item 2", "etc"), selectedValue = test, onSelectedValue = {  test = it })
+            DropDown(weight = 3f, items = listOf("Item 1", "Item 2", "etc"), selectedValue = test,  onSelectedValue = {  test = it })
         }
     }
 }

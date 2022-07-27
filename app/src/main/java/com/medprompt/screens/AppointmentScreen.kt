@@ -1,44 +1,27 @@
 package com.medprompt.screens
 
 import android.util.Log
-import android.widget.DatePicker
 import android.widget.Toast
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.Button
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import com.medprompt.AppState
 import com.medprompt.Screen
 import com.medprompt.components.*
 import com.medprompt.dto.Appointment
-import com.medprompt.dto.CustomDateTime
 import com.medprompt.dto.HomeFeedItem
-import com.medprompt.ui.theme.Blue200
+import com.medprompt.dto.ScreenType
 import com.medprompt.ui.theme.MedpromptTheme
-import kotlinx.coroutines.CoroutineScope
-import org.koin.androidx.viewmodel.scope.emptyState
-import java.sql.Timestamp
-import java.time.Instant
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -54,7 +37,6 @@ fun AppointmentScreen(appState: AppState) {
     val current = LocalDateTime.now()
     val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
     val formatted = current.format(formatter)
-
     var dateTime by remember { mutableStateOf(formatted) }
 
     val freqList = listOf("Week", "Month", "Year")
@@ -64,32 +46,31 @@ fun AppointmentScreen(appState: AppState) {
         Column(modifier = Modifier.fillMaxSize()) {
             HeaderOptions(
                 navController = appState.navController,
-                contextLabel = "Appointment",
+                contextLabel = "Add Appointment",
                 addButtonOnClick = {
                     if (user != null && appName.isNotEmpty()) {
-                        Log.d("DATETIME: ", dateTime)
                         val addApp = firestore
                             .collection("appointments")
                             .document(user.uid)
                             .collection("appointments")
-                            .document()
-                            .set(
+                            .add(
                                 Appointment(
-                                    datetime = dateTime,
-                                    freqAmount = freqAmount,
-                                    freqType = selectedFreqType,
-                                    appName = appName
-                                )
-                            )
+                                datetime = dateTime,
+                                freqAmount = freqAmount,
+                                freqType = selectedFreqType,
+                                appName = appName
+                            ))
 
                         addApp.addOnSuccessListener(OnSuccessListener {
                             firestore
                                 .collection("appointments")
                                 .document(user.uid)
                                 .collection("home-feed")
-                                .document()
+                                .document(it.id)
                                 .set(
                                     HomeFeedItem(
+                                        documentId = it.id,
+                                        screenType = ScreenType.APPOINTMENT,
                                         title = appName,
                                         datetime = dateTime
                                     )
@@ -129,7 +110,7 @@ fun AppointmentScreen(appState: AppState) {
                         }
                     }
                 )
-                DropDown(weight = 3f, items = freqList, onSelectedValue = { selectedFreqType = it })
+                DropDown(weight = 3f, items = freqList, selectedValue = selectedFreqType, onSelectedValue = { selectedFreqType = it })
             }
         }
     }

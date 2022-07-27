@@ -22,9 +22,9 @@ import com.medprompt.components.HeaderOptions
 import com.medprompt.components.InputField
 import com.medprompt.dto.HomeFeedItem
 import com.medprompt.dto.Medication
+import com.medprompt.dto.ScreenType
 import com.medprompt.ui.theme.MedpromptTheme
 import com.medprompt.ui.theme.defaultPadding
-import java.time.Instant
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -56,15 +56,14 @@ fun MedicationScreen(appState: AppState) {
     Column (modifier = Modifier.fillMaxSize()) {
         HeaderOptions(
             navController = appState.navController,
-            contextLabel = "Medication",
+            contextLabel = "Add Medication",
             addButtonOnClick = {
                 if (user != null && medName.isNotEmpty()) {
                     val addMed = firestore
                         .collection("appointments")
                         .document(user.uid)
                         .collection("medications")
-                        .document()
-                        .set(
+                        .add(
                             Medication(
                                 datetime = dateTime,
                                 freqAmount = freqAmount,
@@ -83,9 +82,11 @@ fun MedicationScreen(appState: AppState) {
                             .collection("appointments")
                             .document(user.uid)
                             .collection("home-feed")
-                            .document()
+                            .document(it.id)
                             .set(
                                 HomeFeedItem(
+                                    documentId = it.id,
+                                    screenType = ScreenType.MEDICATION,
                                     title = medName,
                                     datetime = dateTime
                                 )
@@ -132,6 +133,7 @@ fun MedicationScreen(appState: AppState) {
             DropDown(
                 weight = 3f,
                 items = freqList,
+                selectedValue = selectedFreqType,
                 onSelectedValue = { selectedFreqType = it }
             )
         }
@@ -157,6 +159,7 @@ fun MedicationScreen(appState: AppState) {
             DropDown(
                 weight = 3f,
                 items = stockSizeList,
+                selectedValue = selectedDoseSize,
                 onSelectedValue = { selectedDoseSize = it }
             )
         }
@@ -181,6 +184,7 @@ fun MedicationScreen(appState: AppState) {
             DropDown(
                 weight = 3f,
                 items = stockSizeList,
+                selectedValue = selectedStockSize,
                 onSelectedValue = { selectedStockSize = it }
             )
         }
