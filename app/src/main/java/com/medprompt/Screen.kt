@@ -1,5 +1,8 @@
 package com.medprompt
 
+/**
+ * Simply holds a constant value for the routes for each of our screens
+ */
 sealed class Screen(val route: String) {
     object Home: Screen(route = "home_screen")
     object Medication: Screen(route = "medication_screen")
