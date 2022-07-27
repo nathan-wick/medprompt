@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -59,6 +60,7 @@ fun AppointmentScreen(appState: AppState) {
 
     val freqList = listOf("Week", "Month", "Year")
     var selectedFreqType by remember { mutableStateOf(freqList[0]) }
+    var document: String = ""
 
     MedpromptTheme {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -72,22 +74,20 @@ fun AppointmentScreen(appState: AppState) {
                             .collection("appointments")
                             .document(user.uid)
                             .collection("appointments")
-                            .document()
-                            .set(
+                            .add(
                                 Appointment(
-                                    datetime = dateTime,
-                                    freqAmount = freqAmount,
-                                    freqType = selectedFreqType,
-                                    appName = appName
-                                )
-                            )
+                                datetime = dateTime,
+                                freqAmount = freqAmount,
+                                freqType = selectedFreqType,
+                                appName = appName
+                            ))
 
                         addApp.addOnSuccessListener(OnSuccessListener {
                             firestore
                                 .collection("appointments")
                                 .document(user.uid)
                                 .collection("home-feed")
-                                .document()
+                                .document(it.id)
                                 .set(
                                     HomeFeedItem(
                                         title = appName,

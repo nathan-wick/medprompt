@@ -63,8 +63,7 @@ fun MedicationScreen(appState: AppState) {
                         .collection("appointments")
                         .document(user.uid)
                         .collection("medications")
-                        .document()
-                        .set(
+                        .add(
                             Medication(
                                 datetime = dateTime,
                                 freqAmount = freqAmount,
@@ -83,7 +82,7 @@ fun MedicationScreen(appState: AppState) {
                             .collection("appointments")
                             .document(user.uid)
                             .collection("home-feed")
-                            .document()
+                            .document(it.id)
                             .set(
                                 HomeFeedItem(
                                     title = medName,
