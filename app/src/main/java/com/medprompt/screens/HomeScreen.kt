@@ -165,7 +165,7 @@ fun AppointmentList(appState: AppState, context: Context) {
 
             Column (modifier = Modifier.verticalScroll(rememberScrollState())) {
                 homeFeed.forEachIndexed  { index, item ->
-                    AppItem(appText = homeFeed.get(index).title, appDate = homeFeed.get(index).datetime, context = context)
+                    AppItem(appText = homeFeed.get(index).title, appDate = homeFeed.get(index).datetime, context = context, navController = appState.navController)
                 }
             }
         }
@@ -173,7 +173,7 @@ fun AppointmentList(appState: AppState, context: Context) {
 }
 
 @Composable
-fun AppItem(appText : String, appDate: String, context: Context) {
+fun AppItem(navController: NavController, appText : String, appDate: String, context: Context) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -187,7 +187,7 @@ fun AppItem(appText : String, appDate: String, context: Context) {
             modifier = Modifier
                 .padding(defaultPadding)
                 .clickable {
-                    Toast.makeText(context, "Hi", Toast.LENGTH_LONG).show()
+                    navController.navigate("${Screen.EditAppointment.route}/doc321231231231")
                 }
         ) {
             Text(text = appText, color = Color.Black)
