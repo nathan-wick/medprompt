@@ -12,6 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.medprompt.dto.CustomDateTime
 import com.medprompt.ui.theme.MedpromptTheme
+import com.medprompt.ui.theme.defaultPadding
 import java.util.*
 
 /**
@@ -45,12 +46,12 @@ fun DateTimePicker (label: String, onSelectedValue: (CustomDateTime) -> Unit = {
     }
 
     var day by remember { mutableStateOf(1) }
-    var month by remember { mutableStateOf(monthList[ Calendar.getInstance().get(Calendar.MONTH) - 1]) }
+    var month by remember { mutableStateOf(monthList[0]) }
     var year by remember { mutableStateOf( currentYear.toString() ) }
     var hour by remember { mutableStateOf(timeList[0]) }
     var amPm by remember { mutableStateOf(pmAmList[0]) }
 
-    val dateTime by remember {
+    var dateTime by remember {
         mutableStateOf(CustomDateTime(
             year = year,
             month = month,
@@ -60,16 +61,14 @@ fun DateTimePicker (label: String, onSelectedValue: (CustomDateTime) -> Unit = {
         ))
     }
 
-    onSelectedValue.invoke(dateTime)
-
     Column {
         Text(text = label)
         Row(modifier = Modifier
-            .padding(5.dp)
-            .height(60.dp)) {
+            .padding(defaultPadding)
+            .height(55.dp)) {
 
             InputField(
-                weight = 3f, placeholder = "Day",
+                weight = 1f, placeholder = "Day",
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 value = day.toString(),
                 onValueChange = {
@@ -78,18 +77,28 @@ fun DateTimePicker (label: String, onSelectedValue: (CustomDateTime) -> Unit = {
                         Toast.makeText(context, "Must be between 0 and 31", Toast.LENGTH_LONG).show()
                     } else {
                         day = it.toInt()
+                        dateTime.day = day.toString()
                     }
+                    onSelectedValue.invoke(dateTime)
                 }
             )
             DropDown(
-                weight = 3f,
+                weight = 1f,
                 items = monthList,
-                onSelectedValue = { month = it }
+                onSelectedValue = {
+                    month = it
+                    dateTime.month = month
+                    onSelectedValue.invoke(dateTime)
+                }
             )
             DropDown(
-                weight = 3f,
+                weight = 1f,
                 items = yearList,
-                onSelectedValue = { year = it }
+                onSelectedValue = {
+                    year = it
+                    dateTime.year = year
+                    onSelectedValue.invoke(dateTime)
+                }
             )
         }
 
@@ -100,12 +109,20 @@ fun DateTimePicker (label: String, onSelectedValue: (CustomDateTime) -> Unit = {
             DropDown(
                 weight = 1f,
                 items = timeList,
-                onSelectedValue = { hour = it }
+                onSelectedValue = {
+                    hour = it
+                    dateTime.hour = hour
+                    onSelectedValue.invoke(dateTime)
+                }
             )
             DropDown(
                 weight = 1f,
                 items = pmAmList,
-                onSelectedValue = { amPm = it }
+                onSelectedValue = {
+                    amPm = it
+                    dateTime.pmOrAm = amPm
+                    onSelectedValue.invoke(dateTime)
+                }
             )
         }
     }
