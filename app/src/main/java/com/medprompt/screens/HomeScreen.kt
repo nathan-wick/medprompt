@@ -207,11 +207,11 @@ fun AddButton (navController: NavController) {
                         navController.navigate(route = Screen.Appointment.route)
                     })
                 }
-                Row(modifier = Modifier.padding(defaultPadding), ) {
-                    Button(text = "Form", onClick = {
-                        navController.navigate(route = Screen.Form.route)
-                    })
-                }
+//                Row(modifier = Modifier.padding(defaultPadding), ) {
+//                    Button(text = "Form", onClick = {
+//                        navController.navigate(route = Screen.Form.route)
+//                    })
+//                }
             }
         }
 
