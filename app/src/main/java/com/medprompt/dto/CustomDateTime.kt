@@ -1,15 +1,17 @@
 package com.medprompt.dto
 
 import com.google.type.DateTime
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 data class CustomDateTime(
-    val year: String,
-    val month: String,
-    val day: String,
-    val hour: String,
-    val pmOrAm: String
+    var year: String,
+    var month: String,
+    var day: String,
+    var hour: String,
+    var pmOrAm: String
 ) {
-
     override fun toString(): String {
         return "$month $day, $hour $pmOrAm"
     }
