@@ -30,6 +30,8 @@ import com.medprompt.*
 import com.medprompt.components.Button
 import com.medprompt.components.DrawerHeader
 import com.medprompt.dto.HomeFeedItem
+import com.medprompt.dto.ScreenType
+import com.medprompt.dto.getEnum
 import com.medprompt.ui.theme.*
 import kotlinx.coroutines.launch
 import java.util.*
@@ -99,7 +101,7 @@ fun AppointmentList(appState: AppState, context: Context) {
                         text = "Sign Out",
                         modifier = Modifier
                             .height(100.dp)
-                            .wrapContentHeight()
+                            .wrapContentHeight( )
                     )
                 }
             }
@@ -143,6 +145,7 @@ fun AppointmentList(appState: AppState, context: Context) {
                             docSnapshot?.forEach {
                                 // TODO: Make date human readable
                                 val homeFeedItem = HomeFeedItem(
+                                    screenType = getEnum<ScreenType>(it.get("screenType").toString()),
                                     title = it.get("title").toString(),
                                     datetime = it.get("datetime").toString()
                                 )
@@ -165,7 +168,7 @@ fun AppointmentList(appState: AppState, context: Context) {
 
             Column (modifier = Modifier.verticalScroll(rememberScrollState())) {
                 homeFeed.forEachIndexed  { index, item ->
-                    AppItem(appText = homeFeed.get(index).title, appDate = homeFeed.get(index).datetime, context = context, navController = appState.navController)
+                    AppItem(navController = appState.navController, item = item)
                 }
             }
         }
@@ -173,7 +176,7 @@ fun AppointmentList(appState: AppState, context: Context) {
 }
 
 @Composable
-fun AppItem(navController: NavController, appText : String, appDate: String, context: Context) {
+fun AppItem(navController: NavController, item: HomeFeedItem) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -187,13 +190,18 @@ fun AppItem(navController: NavController, appText : String, appDate: String, con
             modifier = Modifier
                 .padding(defaultPadding)
                 .clickable {
-                    navController.navigate("${Screen.EditAppointment.route}/doc321231231231")
+                    if (item.screenType == ScreenType.APPOINTMENT) {
+                        navController.navigate("${Screen.EditAppointment.route}/APPdoc321231231231")
+                    }
+                    if (item.screenType == ScreenType.MEDICATION) {
+                        navController.navigate("${Screen.EditMedication.route}/MEDdoc321231231231")
+                    }
                 }
         ) {
-            Text(text = appText, color = Color.Black)
+            Text(text = item.title, color = Color.Black)
 
             Row (verticalAlignment = Alignment.CenterVertically) {
-                Text(text = appDate, color = Blue200)
+                Text(text = item.datetime, color = Blue200)
                 Icon(
                     Icons.Filled.ArrowForward,
                     contentDescription = "Icon Forward",
