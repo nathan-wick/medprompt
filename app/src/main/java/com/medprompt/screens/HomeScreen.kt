@@ -22,18 +22,17 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.medprompt.*
 import com.medprompt.components.Button
 import com.medprompt.components.DrawerHeader
+import com.medprompt.dto.HomeFeedItem
 import com.medprompt.ui.theme.*
 import kotlinx.coroutines.launch
-
-data class HomeFeedItem(
-    val title: String,
-    val datetime: String
-)
+import java.util.*
+import kotlin.collections.ArrayList
 
 @Composable
 fun HomeScreen(appState: AppState) {
@@ -141,7 +140,7 @@ fun AppointmentList(appState: AppState, context: Context) {
                     .collection("home-feed")
                         .addSnapshotListener { docSnapshot, e ->
                             docSnapshot?.forEach {
-
+                                // TODO: Make date human readable
                                 val homeFeedItem = HomeFeedItem(
                                     title = it.get("title").toString(),
                                     datetime = it.get("datetime").toString()
@@ -150,7 +149,6 @@ fun AppointmentList(appState: AppState, context: Context) {
                                 if (!homeFeed.contains(homeFeedItem)) {
                                     homeFeed.add(homeFeedItem)
                                 }
-                                Log.d("TEST", it.get("title").toString())
                             }
                         }
             } else {
