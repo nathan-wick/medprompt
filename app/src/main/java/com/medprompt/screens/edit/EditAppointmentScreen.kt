@@ -9,7 +9,7 @@ import com.medprompt.AppState
 import com.medprompt.ui.theme.defaultPadding
 
 @Composable
-fun EditApplicationsScreen(appState: AppState, documentId: String) {
+fun EditAppointmentScreen(appState: AppState, documentId: String?) {
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -18,6 +18,6 @@ fun EditApplicationsScreen(appState: AppState, documentId: String) {
         verticalArrangement = Arrangement.Center
     ) {
         Text(text = "Edit Apps here")
-        Text(text = documentId)
+        Text(text = "$documentId")
     }
 }
