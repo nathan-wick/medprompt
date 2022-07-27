@@ -6,6 +6,8 @@ import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -155,7 +157,14 @@ fun AppointmentList(appState: AppState, context: Context) {
                 Text(text = "Log in to add")
             }
 
-            Column {
+            //TODO: Why does this not give is the list? Would be nice if the user had a lot of data to load...
+            //LazyColumn {
+            //    items(homeFeed) { homeFeedItem ->
+            //        AppItem(appText = homeFeedItem.title, appDate = homeFeedItem.datetime)
+            //    }
+            //}
+
+            Column (modifier = Modifier.verticalScroll(rememberScrollState())) {
                 homeFeed.forEachIndexed  { index, item ->
                     AppItem(appText = homeFeed.get(index).title, appDate = homeFeed.get(index).datetime)
                 }
