@@ -1,10 +1,12 @@
 package com.medprompt
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.medprompt.screens.*
+import com.medprompt.screens.edit.EditAppointmentScreen
 
 @Composable
 fun SetupNavGraph(appState: AppState) {
@@ -24,6 +26,12 @@ fun SetupNavGraph(appState: AppState) {
             route = Screen.Appointment.route,
             content = { AppointmentScreen(appState = appState) }
         )
+        composable(
+            route = Screen.EditAppointment.route + "/{documentId}",
+            arguments = listOf(navArgument("documentId") { type = NavType.StringType })
+        ) { navBackStackEntry ->
+            EditAppointmentScreen(appState = appState, documentId = navBackStackEntry.arguments?.getString("documentId"))
+        }
         composable(
             route = Screen.Form.route,
             content = { FormScreen(navController = appState.navController) }
