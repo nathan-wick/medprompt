@@ -1,10 +1,5 @@
 package com.medprompt.dto
 
-import com.google.type.DateTime
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
-
 data class CustomDateTime(
     var year: String,
     var month: String,
@@ -12,6 +7,7 @@ data class CustomDateTime(
     var hour: String,
     var pmOrAm: String
 ) {
+    // using this in Home Feed items
     override fun toString(): String {
         return "$month $day, $hour $pmOrAm"
     }

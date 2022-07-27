@@ -20,7 +20,7 @@ fun EditAppointmentScreen(appState: AppState, documentId: String?) {
     val firestore = FirebaseFirestore.getInstance()
 
     var appName by remember { mutableStateOf("") }
-    var freqAmount: Int? by remember { mutableStateOf(0) }
+    val freqAmount by remember { mutableStateOf(0) }
     var dateTime by remember { mutableStateOf("") }
     val freqList = listOf("Week", "Month", "Year")
     var selectedFreqType by remember { mutableStateOf(freqList[0]) }

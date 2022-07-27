@@ -1,6 +1,5 @@
 package com.medprompt.screens
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -31,15 +30,12 @@ fun AppointmentScreen(appState: AppState) {
     val context = LocalContext.current
     val user = FirebaseAuth.getInstance().currentUser
     val firestore = FirebaseFirestore.getInstance()
-    var appName by remember { mutableStateOf("") }
-    var freqAmount by remember { mutableStateOf(0) }
-
-    val current = LocalDateTime.now()
-    val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
-    val formatted = current.format(formatter)
-    var dateTime by remember { mutableStateOf(formatted) }
 
     val freqList = listOf("Week", "Month", "Year")
+
+    var appName by remember { mutableStateOf("") }
+    var freqAmount by remember { mutableStateOf(0) }
+    var dateTime by remember { mutableStateOf(getFormattedDateTime()) }
     var selectedFreqType by remember { mutableStateOf(freqList[0]) }
 
     MedpromptTheme {
@@ -48,12 +44,15 @@ fun AppointmentScreen(appState: AppState) {
                 navController = appState.navController,
                 contextLabel = "Add Appointment",
                 addButtonOnClick = {
+
+                    // check for user and check that application name is not empty so we don't add blanks
                     if (user != null && appName.isNotEmpty()) {
                         val addApp = firestore
                             .collection("appointments")
                             .document(user.uid)
                             .collection("appointments")
                             .add(
+                                // add to main appointments node
                                 Appointment(
                                 datetime = dateTime,
                                 freqAmount = freqAmount,
@@ -68,6 +67,7 @@ fun AppointmentScreen(appState: AppState) {
                                 .collection("home-feed")
                                 .document(it.id)
                                 .set(
+                                    // add to home-feed node with the same doc id as main node
                                     HomeFeedItem(
                                         documentId = it.id,
                                         screenType = ScreenType.APPOINTMENT,
@@ -92,10 +92,11 @@ fun AppointmentScreen(appState: AppState) {
             DateTimePicker(label = "Date and Time of Appointment", onSelectedValue = { dateTime = it.toString() })
 
             Text(text = "Frequency of the Appointment")
-            Row(modifier = Modifier
+            Row(
+                modifier = Modifier
                 .padding(5.dp)
-                .height(55.dp)) {
-
+                .height(55.dp)
+            ) {
                 InputField(
                     weight = 3f,
                     placeholder = "Times every...",
@@ -110,10 +111,21 @@ fun AppointmentScreen(appState: AppState) {
                         }
                     }
                 )
-                DropDown(weight = 3f, items = freqList, selectedValue = selectedFreqType, onSelectedValue = { selectedFreqType = it })
+                DropDown(
+                    weight = 3f,
+                    items = freqList,
+                    selectedValue = selectedFreqType,
+                    onSelectedValue = { selectedFreqType = it }
+                )
             }
         }
     }
+}
+
+fun getFormattedDateTime() : String {
+    val current = LocalDateTime.now()
+    val formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
+    return current.format(formatter)
 }
 
 @Preview(showBackground = true)
