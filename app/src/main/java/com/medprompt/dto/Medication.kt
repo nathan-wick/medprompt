@@ -13,17 +13,13 @@ import java.util.*
  * @property stockSize the stockSize for every Medication : Int
  * @property stockMetricType the stockMetricType for every Medication : Int
  */
-public class Medication(doseSize: Int = 0,
-                        doseMetricType: Int = 0,
-                        stockSize: Int = 0,
-                        stockMetricType: Int = 0,
-                        id: Int = 0,
-                        @SerializedName("term") var term: String = "",
-                        completionDateTime: LocalDate = LocalDate.of(2023, 1, 1),
-                        frequency: Int = 0
-) : Notification(id, term, completionDateTime, frequency) {
-    override fun toString(): String {
-        return term
-    }
-
-}
+data class Medication(
+    val datetime: String,
+    val freqAmount: Number,
+    val freqType: String,
+    val doseSize: Number,
+    val dozeSizeUnit: String,
+    val stockSize: Number,
+    val stockSizeUnit: String,
+    val medName: String
+)

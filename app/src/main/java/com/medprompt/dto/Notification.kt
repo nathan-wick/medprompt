@@ -1,7 +1,6 @@
 package com.medprompt.dto
 
 import java.time.LocalDate
-import java.util.*
 
 /**
  * * A class Notification is noun class Data Transfer Object.
@@ -16,6 +15,4 @@ open class Notification(
     var name: String,
     var completionDate: LocalDate,
     var frequency: Int
-) {
-
-}
+)

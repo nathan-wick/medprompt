@@ -1,21 +1,17 @@
-package com.medprompt
+package com.medprompt.components
 
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 
-
+/**
+ * TopBar for our Scaffold on the home screen
+ */
 @Composable
-fun AppBar(
-    onNavigationIconClick: () -> Unit
-) {
+fun AppBar(onNavigationIconClick: () -> Unit) {
     TopAppBar(
-        title = {
-            Text(text = stringResource(id = R.string.app_name))
-        },
+        title = { Text(text = "MedPrompt") },
         backgroundColor = MaterialTheme.colors.primary,
         contentColor = MaterialTheme.colors.onPrimary,
         navigationIcon = {

@@ -1,134 +1,181 @@
 package com.medprompt.screens
 
+import android.content.Context
+import android.content.Intent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.firebase.ui.auth.AuthUI
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.medprompt.*
 import com.medprompt.components.Button
+import com.medprompt.components.DrawerHeader
+import com.medprompt.dto.HomeFeedItem
+import com.medprompt.dto.ScreenType
+import com.medprompt.dto.getEnum
 import com.medprompt.ui.theme.*
 import kotlinx.coroutines.launch
+import kotlin.collections.ArrayList
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(appState: AppState) {
+    val context = LocalContext.current
     Scaffold(
         content = {
-//            Row {
-//            TODO: Implement Nathan's changes to mine
-//                AppHeader()
-            AppointmentList()
-//            }
+            AppointmentList(appState, context)
         },
-        floatingActionButton = { AddButton(navController) },
+        floatingActionButton = { AddButton(appState.navController) },
         floatingActionButtonPosition = FabPosition.End
     )
 }
 
 @Composable
-fun AppHeader() {
-    NavigationDrawerComposeTheme {
-        val scaffoldState = rememberScaffoldState()
-        val scope = rememberCoroutineScope()
+fun AppointmentList(appState: AppState, context: Context) {
+    val scaffoldState = appState.scaffoldState
+    val scope = appState.scope
 
-        Scaffold (
-            scaffoldState = scaffoldState,
-            topBar = {
-                AppBar(
-                    onNavigationIconClick = {
-                        scope.launch {
-                            scaffoldState.drawerState.open()
-                        }
+    val user = FirebaseAuth.getInstance().currentUser
+    val firestore = FirebaseFirestore.getInstance()
+    val homeFeed by remember { mutableStateOf(ArrayList<HomeFeedItem>()) }
+
+    Scaffold (
+        scaffoldState = scaffoldState,
+        topBar = {
+            com.medprompt.components.AppBar(
+                onNavigationIconClick = {
+                    scope.launch {
+                        scaffoldState.drawerState.open()
                     }
-                )
-            },
-            drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
-            drawerContent = {
-                DrawerHeader()
-                DrawerBody(
-                    items = listOf(
-                        MenuItem(
-                            id = "home",
-                            title = "Home",
-                            contentDescription = "Go to home screen",
-                            icon = Icons.Default.Home
-                        ),
-                        MenuItem(
-                            id = "account",
-                            title = "My Account",
-                            contentDescription = "Manage my account",
-                            icon = Icons.Default.AccountCircle
-                        ),
-                        MenuItem(
-                            id = "signout",
-                            title = "Sign Out",
-                            contentDescription = "Sign out",
-                            icon = Icons.Default.ArrowBack
-                        ),
-                    ),
-                    onItemClick = {
-                        // TODO: Change screen on item click
-                        println("Clicked on ${it.title}")
-                    }
-                )
-            }
-        ) {
+                }
+            )
+        },
+        drawerGesturesEnabled = scaffoldState.drawerState.isOpen,
+        drawerContent = {
+            DrawerHeader()
+            if (user != null) {
+                Row (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            AuthUI
+                                .getInstance()
+                                .signOut(context)
+                                .addOnCompleteListener(OnCompleteListener {
+                                    if (it.isComplete) {
+                                        appState.navController.navigate(Screen.Home.route)
+                                    }
+                                })
 
-        }
-    }
-}
-
-@Composable
-fun AppointmentList() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(vertical = 30.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Surface(
-            modifier = Modifier
-                .width(350.dp)
-                .height(50.dp),
-            color = MaterialTheme.colors.primary
-        ) {
-            Row (
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.padding(horizontal = 10.dp)
-            ) {
-                Text(text = "MedPrompt")
-                IconButton(onClick = { /*TODO*/ }) {
+                            appState.navController.navigate(Screen.Home.route)
+                        },
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
                     Icon(
-                        imageVector = Icons.Filled.Menu,
-                        contentDescription = "Menu",
-                        modifier = Modifier.padding(horizontal = 10.dp)
+                        modifier = Modifier.size(40.dp),
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "Sign Out Icon",
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Text(
+                        text = "Sign Out",
+                        modifier = Modifier
+                            .height(100.dp)
+                            .wrapContentHeight( )
                     )
                 }
             }
+            else {
+                Row (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            context.startActivity(
+                                Intent(
+                                    context,
+                                    LoginActivity::class.java
+                                )
+                            )
+                        },
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Icon(
+                        modifier = Modifier.size(40.dp),
+                        imageVector = Icons.Filled.AccountCircle,
+                        contentDescription = "Account Login Icon",
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Text(
+                        text = "Login / Signup",
+                        modifier = Modifier
+                            .height(100.dp)
+                            .wrapContentHeight()
+                    )
+                }
+            }
+        },
+        content = {
+            if (user != null) {
+                    firestore
+                    .collection("appointments")
+                    .document(user.uid)
+                    .collection("home-feed")
+                        .addSnapshotListener { docSnapshot, e ->
+                            docSnapshot?.forEach {
+                                // TODO: Make date human readable
+                                val homeFeedItem = HomeFeedItem(
+                                    documentId = it.get("documentId").toString(),
+                                    screenType = getEnum<ScreenType>(it.get("screenType").toString()),
+                                    title = it.get("title").toString(),
+                                    datetime = it.get("datetime").toString()
+                                )
+
+                                if (!homeFeed.contains(homeFeedItem)) {
+                                    homeFeed.add(homeFeedItem)
+                                }
+                            }
+                        }
+            } else {
+                Text(text = "Log in to add")
+            }
+
+            //TODO: Why does this not give is the list? Would be nice if the user had a lot of data to load...
+            //LazyColumn {
+            //    items(homeFeed) { homeFeedItem ->
+            //        AppItem(appText = homeFeedItem.title, appDate = homeFeedItem.datetime)
+            //    }
+            //}
+
+            Column (modifier = Modifier.verticalScroll(rememberScrollState())) {
+                homeFeed.forEachIndexed  { index, item ->
+                    AppItem(navController = appState.navController, item = item)
+                }
+            }
         }
-
-        AppItem(appText = "Complete Diet Form", appDate = "TODAY, 9:00 PM")
-        AppItem(appText = "Inflectra Treatment", appDate = "MAY 12, 10:00 PM")
-        AppItem(appText = "Take Methotrexate", appDate = "MAY 12, 9:00 PM")
-        AppItem(appText = "Refill Methotrexate", appDate = "AUGUST 12")
-
-    }
+    )
 }
 
 @Composable
-fun AppItem(appText : String, appDate: String) {
+fun AppItem(navController: NavController, item: HomeFeedItem) {
     Surface(
         modifier = Modifier
-            .width(350.dp)
+            .fillMaxWidth()
             .height(50.dp)
             .padding(vertical = 1.dp),
         color = Silver100
@@ -136,9 +183,28 @@ fun AppItem(appText : String, appDate: String) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(defaultPadding)
+                .clickable {
+                    if (item.screenType == ScreenType.APPOINTMENT) {
+                        navController.navigate("${Screen.EditAppointment.route}/${item.documentId}")
+                    }
+                    if (item.screenType == ScreenType.MEDICATION) {
+                        navController.navigate("${Screen.EditMedication.route}/${item.documentId}")
+                    }
+                }
         ) {
-            Text(text = appText, color = Color.Black, modifier = Modifier.padding(horizontal = 10.dp))
-            Text(text = appDate, color = Blue200, modifier = Modifier.padding(horizontal = 10.dp))
+            Text(text = item.title, color = Color.Black)
+
+            Row (verticalAlignment = Alignment.CenterVertically) {
+                Text(text = item.datetime, color = Blue200)
+                Icon(
+                    Icons.Filled.ArrowForward,
+                    contentDescription = "Icon Forward",
+                    tint = Blue500,
+                    modifier = Modifier.size(15.dp)
+                )
+            }
         }
     }
 }
@@ -167,11 +233,6 @@ fun AddButton (navController: NavController) {
                         navController.navigate(route = Screen.Appointment.route)
                     })
                 }
-                Row(modifier = Modifier.padding(defaultPadding), ) {
-                    Button(text = "Form", onClick = {
-                        navController.navigate(route = Screen.Form.route)
-                    })
-                }
             }
         }
 
@@ -190,6 +251,6 @@ fun AddButton (navController: NavController) {
 @Composable
 fun DefaultPreview() {
     MedpromptTheme {
-        HomeScreen(navController = rememberNavController())
+        HomeScreen(appState = AppState(rememberScaffoldState(), rememberNavController(), rememberCoroutineScope()))
     }
 }

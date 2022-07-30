@@ -1,14 +1,19 @@
 package com.medprompt.components
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.medprompt.dto.CustomDateTime
 import com.medprompt.ui.theme.MedpromptTheme
+import com.medprompt.ui.theme.defaultPadding
+import java.util.*
 
 /**
  * This is custom Date and Time picker. Why create this?
@@ -24,28 +29,123 @@ import com.medprompt.ui.theme.MedpromptTheme
  * This is only only reason why I wanted to isolate this part of the app.
  */
 @Composable
-fun DateTimePicker (label: String) {
+fun DateTimePicker (label: String, onSelectedValue: (CustomDateTime) -> Unit = {}) {
+    val context = LocalContext.current
+    val monthList = listOf("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
+    val timeList = listOf("1:00", "1:30", "2:00", "2:30", "3:00", "3:30", "4:00", "4:30", "5:00", "5:30", "6:00", "6:30", "7:00", "7:30", "8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30")
+    val pmAmList = listOf("PM", "AM")
+
+    val yearList = initYearList()
+    val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+
+    var day by remember { mutableStateOf(1) }
+    var month by remember { mutableStateOf(monthList[0]) }
+    var year by remember { mutableStateOf( currentYear.toString() ) }
+    var hour by remember { mutableStateOf(timeList[0]) }
+    var amPm by remember { mutableStateOf(pmAmList[0]) }
+
+    val dateTime by remember {
+        mutableStateOf(CustomDateTime(
+            year = year,
+            month = month,
+            day = day.toString(),
+            hour = hour,
+            pmOrAm = amPm
+        ))
+    }
+
     Column {
         Text(text = label)
-        Row(modifier = Modifier.padding(5.dp).height(60.dp)) {
+        Row(modifier = Modifier
+            .padding(defaultPadding)
+            .height(55.dp)) {
 
-            // These lists are static data for now... Firebase will come later
-            val monthList = listOf("Jan", "Feb")
-            val yearList = listOf("2000", "2001", "2002")
+            // day, probably should have been a dropdown
+            InputField(
+                weight = 1f, placeholder = "Day",
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                value = day.toString(),
+                onValueChange = {
+                    if (it.isNullOrBlank() || it.isNullOrEmpty() || it.toInt() > 31) {
+                        day = 1
+                        Toast.makeText(context, "Must be between 0 and 31", Toast.LENGTH_LONG).show()
+                    } else {
+                        day = it.toInt()
+                        dateTime.day = day.toString()
+                    }
+                    onSelectedValue.invoke(dateTime)
+                }
+            )
 
-            InputField(weight = 3f, placeholder = "Day", keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
-            DropDown(weight = 3f, items = monthList)
-            DropDown(weight = 3f, items = yearList)
+            // month picker
+            DropDown(
+                weight = 1f,
+                items = monthList,
+                selectedValue = month,
+                onSelectedValue = {
+                    month = it
+                    dateTime.month = month
+                    onSelectedValue.invoke(dateTime)
+                }
+            )
+
+            // year picker
+            DropDown(
+                weight = 1f,
+                items = yearList,
+                selectedValue = year,
+                onSelectedValue = {
+                    year = it
+                    dateTime.year = year
+                    onSelectedValue.invoke(dateTime)
+                }
+            )
         }
 
-        Row(modifier = Modifier.padding(5.dp).height(50.dp)) {
-            val timeList = listOf("8:00", "9:00")
-            val pmAmList = listOf("PM", "AM")
+        Row(modifier = Modifier
+            .padding(5.dp)
+            .height(50.dp)) {
 
-            DropDown(weight = 1f, items = timeList)
-            DropDown(weight = 1f, items = pmAmList)
+            // Hour picker
+            DropDown(
+                weight = 1f,
+                items = timeList,
+                selectedValue = hour,
+                onSelectedValue = {
+                    hour = it
+                    dateTime.hour = hour
+                    onSelectedValue.invoke(dateTime)
+                }
+            )
+
+            // AM or PM picker
+            DropDown(
+                weight = 1f,
+                items = pmAmList,
+                selectedValue = amPm,
+                onSelectedValue = {
+                    amPm = it
+                    dateTime.pmOrAm = amPm
+                    onSelectedValue.invoke(dateTime)
+                }
+            )
         }
     }
+}
+
+fun initYearList() : MutableList<String> {
+    val yearList = mutableListOf<String>()
+
+    val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+    var yearToAdd = currentYear
+    val availableYears = 10
+
+    while (yearToAdd < (currentYear + availableYears)) {
+        yearList.add(yearToAdd.toString())
+        yearToAdd += 1
+    }
+
+    return yearList
 }
 
 @Preview(showBackground = true)

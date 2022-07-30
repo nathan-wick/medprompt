@@ -17,9 +17,11 @@ import com.medprompt.ui.theme.defaultPadding
  * NOTE: This component has to be inside a Row
  */
 @Composable
-fun RowScope.Button (weight: Float = 1f, text: String, onClick:() -> Unit = { /*TODO onClick*/ }) {
+fun RowScope.Button (weight: Float = 1f, text: String, onClick:() -> Unit = { /* TODO onClick */ }) {
 
+    // the name for our custom button is the same...
     androidx.compose.material.Button(
+        content = { Text(text = text) },
         onClick = onClick,
         shape = CircleShape,
         colors = ButtonDefaults.buttonColors(backgroundColor = Blue200),
@@ -27,9 +29,7 @@ fun RowScope.Button (weight: Float = 1f, text: String, onClick:() -> Unit = { /*
             .padding(horizontal = defaultPadding)
             .height(buttonHeight)
             .weight(weight = weight)
-    ) {
-        Text(text = text)
-    }
+    )
 }
 
 @Preview(showBackground = true)
@@ -38,7 +38,7 @@ fun Button_Preview() {
     MedpromptTheme {
         Column() {
             Row() {
-                Button(weight = 3f, text = "Custom Button", onClick = { /* TODO */ })
+                Button(weight = 3f, text = "Custom Button")
             }
         }
     }

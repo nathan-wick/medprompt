@@ -1,35 +1,48 @@
 package com.medprompt
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.medprompt.screens.AppointmentScreen
-import com.medprompt.screens.FormScreen
-import com.medprompt.screens.HomeScreen
-import com.medprompt.screens.MedicationScreen
+import androidx.navigation.navArgument
+import com.medprompt.screens.*
+import com.medprompt.screens.edit.EditAppointmentScreen
+import com.medprompt.screens.edit.EditMedicationScreen
 
 @Composable
-fun SetupNavGraph(navController: NavHostController) {
+fun SetupNavGraph(appState: AppState) {
     NavHost(
-        navController =  navController,
+        navController =  appState.navController,
         startDestination = Screen.Home.route
     ) {
         composable(
             route = Screen.Home.route,
-            content = { HomeScreen(navController = navController) }
+            content = { HomeScreen(appState = appState) }
         )
         composable(
             route = Screen.Medication.route,
-            content = { MedicationScreen(navController = navController) }
+            content = { MedicationScreen(appState = appState) }
         )
+        composable(
+            route = Screen.EditMedication.route + "/{documentId}",
+            arguments = listOf(navArgument("documentId") { type = NavType.StringType })
+        ) { navBackStackEntry ->
+            EditMedicationScreen(appState = appState, documentId = navBackStackEntry.arguments?.getString("documentId"))
+        }
         composable(
             route = Screen.Appointment.route,
-            content = { AppointmentScreen(navController = navController) }
+            content = { AppointmentScreen(appState = appState) }
         )
         composable(
+            // we can pass arguments to our screens this way...
+            route = Screen.EditAppointment.route + "/{documentId}",
+            arguments = listOf(navArgument("documentId") { type = NavType.StringType })
+        ) { navBackStackEntry ->
+            EditAppointmentScreen(appState = appState, documentId = navBackStackEntry.arguments?.getString("documentId"))
+        }
+        composable(
             route = Screen.Form.route,
-            content = { FormScreen(navController = navController) }
+            content = { FormScreen(navController = appState.navController) }
         )
     }
 }
